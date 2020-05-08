@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useSubscription } from '@apollo/react-hooks'
 
 import { useTabs } from '../../store/tabs'
 import { UserContext } from '../../store/user'
@@ -8,15 +8,29 @@ import { StyledSection, StyledIllo, StyledButton } from './styled'
 
 import { Modal } from '../../components'
 
-import { INITIATE_SETUP } from '../../graphql'
+import { INITIATE_SETUP, INSTANCE_STATUS } from '../../graphql'
 
 const Home = () => {
    const { addTab } = useTabs()
    const { state: user } = React.useContext(UserContext)
+   const [status, setStatus] = React.useState(null)
    const [initiateSetup] = useMutation(INITIATE_SETUP)
+   const { data: { organization = {} } = {} } = useSubscription(
+      INSTANCE_STATUS,
+      {
+         variables: { id: user.organization.id },
+      }
+   )
+
+   React.useEffect(() => {
+      if (organization?.instanceStatus) {
+         setStatus(organization.instanceStatus)
+      }
+   }, [organization])
+
    return (
       <div>
-         {user.organization.status !== 'SETUP_COMPLETED' && (
+         {status && status !== 'SETUP_COMPLETED' && (
             <Modal>
                <div className="text-center">
                   <StyledIllo>Illustration stuff</StyledIllo>

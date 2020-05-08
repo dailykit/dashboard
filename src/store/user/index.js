@@ -6,6 +6,7 @@ const initialState = {
    name: '',
    email: '',
    organization: {
+      id: null,
       name: '',
       status: '',
    },
@@ -19,6 +20,7 @@ const reducers = (state, { type, payload }) => {
             name: `${payload.firstName} ${payload.lastName}`,
             email: payload.email,
             organization: {
+               id: payload.organization.id,
                name: payload.organization.organizationName,
                status: payload.organization.instanceStatus,
             },
