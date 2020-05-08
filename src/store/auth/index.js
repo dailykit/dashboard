@@ -4,7 +4,7 @@ import Keycloak from 'keycloak-js'
 const keycloak = new Keycloak({
    realm: 'accounts',
    url: process.env.REACT_APP_KEYCLOAK_URL,
-   clientId: 'dashboard',
+   clientId: process.env.REACT_APP_KEYCLOAK_CLIENT,
    'ssl-required': 'none',
    'public-client': true,
    'bearer-only': false,
