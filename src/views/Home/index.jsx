@@ -50,8 +50,20 @@ const Home = () => {
             </Modal>
          )}
          <StyledSection>
-            <h2>Hello, {user.name}</h2>
-            <span>Organization: {user.organization.name}</span>
+            <div className="flex justify-between">
+               <section>
+                  <h2>Hello, {user.name}</h2>
+                  <span>Organization: {user.organization.name}</span>
+               </section>
+               <a
+                  target="__blank"
+                  rel="noopener noreferrer"
+                  href={user.organization.url}
+                  className="border border-green-300 hover:border-green-500 hover:bg-green-500 hover:text-white rounded flex items-center px-3 h-10"
+               >
+                  Go to DailyOS
+               </a>
+            </div>
             <hr className="mt-2 mb-4" />
             <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500 mb-2">
                Sections
