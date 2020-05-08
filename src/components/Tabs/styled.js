@@ -12,11 +12,13 @@ export const StyledTab = styled.li(
       height: 40px;
       display: grid;
       cursor: pointer;
+      font-size: 14px;
       align-items: center;
       grid-template-columns: 1fr 40px;
       background: ${active ? '#048e65' : 'transparent'};
       border-right: 1px solid #048e65;
       span {
+         line-height: 40px;
          padding-left: 12px;
       }
       div {
