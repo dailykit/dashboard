@@ -31,5 +31,8 @@ export const StyledNav = styled.div`
       :focus {
          background: #048e65;
       }
+      svg {
+         display: unset;
+      }
    }
 `
