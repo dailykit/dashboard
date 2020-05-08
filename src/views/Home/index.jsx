@@ -95,6 +95,25 @@ const Home = () => {
                   <h1 className="text-xl text-teal-800">Daily OS</h1>
                   <p className="text-gray-500">View your dailyos details.</p>
                </div>
+               <div
+                  tabIndex="0"
+                  role="button"
+                  className="border border-l-4 rounded p-3 focus:outline-none focus:border-teal-600 hover:border-teal-600"
+                  onClick={() =>
+                     addTab('Delivery Partnerships', '/partnerships/delivery')
+                  }
+                  onKeyDown={e =>
+                     [32, 13].includes(e.keyCode) &&
+                     addTab('Delivery Partnerships', '/partnerships/delivery')
+                  }
+               >
+                  <h1 className="text-xl text-teal-800">
+                     Delivery Partnerships
+                  </h1>
+                  <p className="text-gray-500">
+                     View your delivery partnerships details.
+                  </p>
+               </div>
             </main>
          </StyledSection>
       </div>
