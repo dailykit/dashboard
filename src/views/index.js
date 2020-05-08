@@ -1,4 +1,4 @@
 import Home from './Home'
-import { UsersListing } from './Listings'
 
-export { Home, UsersListing }
+export { Home }
+export * from './Listings'

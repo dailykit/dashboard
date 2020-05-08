@@ -1,3 +1,1 @@
-import UsersListing from './UsersListing'
-
-export { UsersListing }
+export * from './Account'
