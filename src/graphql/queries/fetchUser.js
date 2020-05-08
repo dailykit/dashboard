@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import gql from 'graphql-tag'
 
 export const FETCH_USER = gql`
    query organizationAdmins($where: organization_organizationAdmin_bool_exp) {

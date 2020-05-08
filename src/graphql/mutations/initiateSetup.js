@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import gql from 'graphql-tag'
 
 export const INITIATE_SETUP = gql`
    mutation updateOrganizations(
