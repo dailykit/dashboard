@@ -1,46 +1,18 @@
 import React from 'react'
-import { useLazyQuery } from '@apollo/react-hooks'
 
-import { useAuth } from '../../store/auth'
 import { useTabs } from '../../store/tabs'
-
-import { FETCH_USER } from '../../graphql'
+import { UserContext } from '../../store/user'
 
 import { StyledSection } from './styled'
 
 const Home = () => {
-   const { user } = useAuth()
    const { addTab } = useTabs()
-   const [organization, setOrganization] = React.useState(null)
-   const [fetchUser, { loading, data }] = useLazyQuery(FETCH_USER)
-   React.useEffect(() => {
-      if (user.email) {
-         fetchUser({
-            variables: {
-               where: {
-                  email: { _eq: user.email },
-               },
-            },
-         })
-      }
-   }, [user])
-   React.useEffect(() => {
-      if (!loading && Array.isArray(data?.organizationAdmins)) {
-         const userOrg = data.organizationAdmins[0].organization
-         setOrganization({
-            name: userOrg.organizationName,
-         })
-      }
-   }, [loading, data])
-
-   if (loading) return <div>Loading...</div>
+   const { state } = React.useContext(UserContext)
    return (
       <div>
          <StyledSection>
-            <h2>
-               Hello, {user.firstName} {user.lastName}
-            </h2>
-            <span>Organization: {organization?.name}</span>
+            <h2>Hello, {state.name}</h2>
+            <span>Organization: {state.organization.name}</span>
             <hr className="mt-2 mb-4" />
             <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500 mb-2">
                Sections

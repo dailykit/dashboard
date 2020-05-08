@@ -9,6 +9,7 @@ export const FETCH_USER = gql`
          lastName
          organization {
             organizationName
+            instanceStatus
          }
       }
    }
