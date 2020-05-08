@@ -1,4 +1,11 @@
 import styled from 'styled-components'
+import tw from 'tailwind.macro'
+
+export const Wrapper = styled.div`
+   max-width: 980px;
+   width: calc(100vw - 40px);
+   ${tw`mx-auto pt-4`}
+`
 
 export const StyledWrapper = styled.div`
    margin: 0 auto;
