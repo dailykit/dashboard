@@ -13,3 +13,17 @@ export const StyledSection = styled.section(
       }
    `
 )
+
+export const StyledIllo = styled.div(
+   () => css`
+      height: 480px;
+      ${tw`bg-gray-100 rounded flex items-center justify-center`}
+   `
+)
+
+export const StyledButton = styled.button(
+   () => css`
+      background: #04a777;
+      ${tw`mt-3 px-6 h-10 rounded-full text-sm uppercase font-medium text-white`}
+   `
+)

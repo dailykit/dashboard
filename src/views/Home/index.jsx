@@ -1,18 +1,43 @@
 import React from 'react'
+import { useMutation } from '@apollo/react-hooks'
 
 import { useTabs } from '../../store/tabs'
 import { UserContext } from '../../store/user'
 
-import { StyledSection } from './styled'
+import { StyledSection, StyledIllo, StyledButton } from './styled'
+
+import { Modal } from '../../components'
+
+import { INITIATE_SETUP } from '../../graphql'
 
 const Home = () => {
    const { addTab } = useTabs()
-   const { state } = React.useContext(UserContext)
+   const { state: user } = React.useContext(UserContext)
+   const [initiateSetup] = useMutation(INITIATE_SETUP)
    return (
       <div>
+         {user.organization.status !== 'SETUP_COMPLETED' && (
+            <Modal>
+               <div className="text-center">
+                  <StyledIllo>Illustration stuff</StyledIllo>
+                  <StyledButton
+                     onClick={() =>
+                        initiateSetup({
+                           variables: {
+                              instanceRequested: true,
+                              email: { _eq: user.email },
+                           },
+                        })
+                     }
+                  >
+                     Initiate Setup
+                  </StyledButton>
+               </div>
+            </Modal>
+         )}
          <StyledSection>
-            <h2>Hello, {state.name}</h2>
-            <span>Organization: {state.organization.name}</span>
+            <h2>Hello, {user.name}</h2>
+            <span>Organization: {user.organization.name}</span>
             <hr className="mt-2 mb-4" />
             <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500 mb-2">
                Sections
