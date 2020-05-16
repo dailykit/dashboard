@@ -58,58 +58,70 @@ export const Instance = () => {
             <h2 className="text-sm font-medium uppercase tracking-wider text-gray-500 mb-2">
                Instance Details
             </h2>
-            <div className="border border-l-4 rounded p-3">
-               {instance.active && (
-                  <span className="uppercase text-xs font-medium text-teal-800 rounded bg-teal-200 border border-teal-300 px-1">
-                     Running
-                  </span>
-               )}
-               <StyledSection>
-                  <h3>Type:</h3>
-                  <span>&nbsp;{instance.instanceType}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>IP:</h3>
-                  <span>&nbsp;{instance.publicIp}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>URL:</h3>
-                  <span>&nbsp;{instance.instanceUrl}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>RAM:</h3>
-                  <span>&nbsp;{instance.instanceSize.ram}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>Processor:</h3>
-                  <span>&nbsp;{instance.instanceSize.processor}</span>
-               </StyledSection>
-            </div>
+            {Object.keys(instance).length > 0 ? (
+               <div className="border border-l-4 rounded p-3">
+                  {instance.active && (
+                     <span className="uppercase text-xs font-medium text-teal-800 rounded bg-teal-200 border border-teal-300 px-1">
+                        Running
+                     </span>
+                  )}
+                  <StyledSection>
+                     <h3>Type:</h3>
+                     <span>&nbsp;{instance.instanceType}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>IP:</h3>
+                     <span>&nbsp;{instance.publicIp}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>URL:</h3>
+                     <span>&nbsp;{instance.instanceUrl}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>RAM:</h3>
+                     <span>&nbsp;{instance.instanceSize.ram}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>Processor:</h3>
+                     <span>&nbsp;{instance.instanceSize.processor}</span>
+                  </StyledSection>
+               </div>
+            ) : (
+               <div className="border border-l-4 rounded p-3">
+                  Instance not setup yet!
+               </div>
+            )}
             <h2 className="mt-4 text-sm font-medium uppercase tracking-wider text-gray-500 mb-2">
                Database Details
             </h2>
-            <div className="border border-l-4 rounded p-3">
-               <StyledSection>
-                  <h3>URL:</h3>
-                  <span>&nbsp;{instance.pgdatabases[0].dbhostname}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>Name:</h3>
-                  <span>&nbsp;{instance.pgdatabases[0].dbname}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>Port:</h3>
-                  <span>&nbsp;{instance.pgdatabases[0].dbport}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>Username:</h3>
-                  <span>&nbsp;{instance.pgdatabases[0].username}</span>
-               </StyledSection>
-               <StyledSection>
-                  <h3>Password:</h3>
-                  <span>&nbsp;{instance.pgdatabases[0].password}</span>
-               </StyledSection>
-            </div>
+            {instance.pgdatabases.length > 0 ? (
+               <div className="border border-l-4 rounded p-3">
+                  <StyledSection>
+                     <h3>URL:</h3>
+                     <span>&nbsp;{instance.pgdatabases[0].dbhostname}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>Name:</h3>
+                     <span>&nbsp;{instance.pgdatabases[0].dbname}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>Port:</h3>
+                     <span>&nbsp;{instance.pgdatabases[0].dbport}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>Username:</h3>
+                     <span>&nbsp;{instance.pgdatabases[0].username}</span>
+                  </StyledSection>
+                  <StyledSection>
+                     <h3>Password:</h3>
+                     <span>&nbsp;{instance.pgdatabases[0].password}</span>
+                  </StyledSection>
+               </div>
+            ) : (
+               <div className="border border-l-4 rounded p-3">
+                  Database not setup yet!
+               </div>
+            )}
          </Wrapper>
       )
 }
