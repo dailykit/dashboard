@@ -2,7 +2,13 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 // Views
-import { Home, Account, Instance, DeliveryPartnerships } from '../../views'
+import {
+   Home,
+   Account,
+   Payment,
+   Instance,
+   DeliveryPartnerships,
+} from '../../views'
 
 const Main = () => {
    return (
@@ -19,6 +25,9 @@ const Main = () => {
             </Route>
             <Route path="/partnerships/delivery" exact>
                <DeliveryPartnerships />
+            </Route>
+            <Route path="/payment" exact>
+               <Payment />
             </Route>
          </Switch>
       </main>

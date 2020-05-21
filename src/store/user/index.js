@@ -10,6 +10,7 @@ const initialState = {
       url: '',
       name: '',
       status: '',
+      stripeAccountId: '',
    },
 }
 
@@ -25,6 +26,7 @@ const reducers = (state, { type, payload }) => {
                url: payload.organization.organizationUrl,
                name: payload.organization.organizationName,
                status: payload.organization.instanceStatus,
+               stripeAccountId: payload.organization.stripeAccountId,
             },
          }
       }

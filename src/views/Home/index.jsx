@@ -1,4 +1,6 @@
 import React from 'react'
+import axios from 'axios'
+import { useLocation } from 'react-router-dom'
 import { useMutation, useSubscription } from '@apollo/react-hooks'
 
 import { useTabs } from '../../store/tabs'
@@ -8,13 +10,15 @@ import { StyledSection, StyledIllo, StyledButton } from './styled'
 
 import { Modal } from '../../components'
 
-import { INITIATE_SETUP, INSTANCE_STATUS } from '../../graphql'
+import { INITIATE_SETUP, INSTANCE_STATUS, UPDATE_ORG } from '../../graphql'
 
 const Home = () => {
    const { addTab } = useTabs()
+   const location = useLocation()
    const { state: user } = React.useContext(UserContext)
    const [status, setStatus] = React.useState(null)
    const [initiateSetup] = useMutation(INITIATE_SETUP)
+   const [updateOrg] = useMutation(UPDATE_ORG)
    const { data: { organization = {} } = {} } = useSubscription(
       INSTANCE_STATUS,
       {
@@ -27,6 +31,27 @@ const Home = () => {
          setStatus(organization.instanceStatus)
       }
    }, [organization])
+
+   React.useEffect(() => {
+      if (location.search.includes('code')) {
+         const code = new URLSearchParams(location.search).get('code')
+         ;(async () => {
+            const { data } = await axios({
+               data: { code },
+               method: 'POST',
+               url: process.env.REACT_APP_PAYMENT_SERVICE_URL,
+            })
+            updateOrg({
+               variables: {
+                  id: user.organization.id,
+                  _set: {
+                     stripeAccountId: data.stripeAccountId,
+                  },
+               },
+            })
+         })()
+      }
+   }, [location])
 
    return (
       <div>
@@ -58,7 +83,7 @@ const Home = () => {
                <a
                   target="__blank"
                   rel="noopener noreferrer"
-                  href={user.organization.url}
+                  href={`http://${user.organization.url}/desktop`}
                   className="border border-green-300 hover:border-green-500 hover:bg-green-500 hover:text-white rounded flex items-center px-3 h-10"
                >
                   Go to DailyOS
@@ -113,6 +138,19 @@ const Home = () => {
                   <p className="text-gray-500">
                      View your delivery partnerships details.
                   </p>
+               </div>
+               <div
+                  tabIndex="0"
+                  role="button"
+                  className="border border-l-4 rounded p-3 focus:outline-none focus:border-teal-600 hover:border-teal-600"
+                  onClick={() => addTab('Payment', '/payment')}
+                  onKeyDown={e =>
+                     [32, 13].includes(e.keyCode) &&
+                     addTab('Payment', '/payment')
+                  }
+               >
+                  <h1 className="text-xl text-teal-800">Payment</h1>
+                  <p className="text-gray-500">Manage your payments account.</p>
                </div>
             </main>
          </StyledSection>

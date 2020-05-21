@@ -30,6 +30,9 @@ const Sidebar = ({ visible, toggleSidebar }) => {
             >
                Delivery Partnerships
             </StyledListItem>
+            <StyledListItem onClick={() => addTab('Payment', '/payment')}>
+               Payment
+            </StyledListItem>
          </StyledList>
       </StyledSidebar>
    )
