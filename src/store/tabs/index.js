@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 const Context = React.createContext()
 
 const initialState = {
-   tabs: [],
+   tabs: [{ title: 'Payment', path: '/payment' }],
 }
 
 const reducers = (state, { type, payload }) => {
