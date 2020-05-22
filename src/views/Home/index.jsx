@@ -36,22 +36,24 @@ const Home = () => {
       if (location.search.includes('code')) {
          const code = new URLSearchParams(location.search).get('code')
          ;(async () => {
-            const { data } = await axios({
-               data: { code },
-               method: 'POST',
-               url: process.env.REACT_APP_PAYMENT_SERVICE_URL,
-            })
-            updateOrg({
-               variables: {
-                  id: user.organization.id,
-                  _set: {
-                     stripeAccountId: data.stripeAccountId,
-                  },
-               },
-            })
+            if (user?.organization?.id) {
+               const response = await axios.get(
+                  `http://localhost:4000/api/payments/account-id/?code=${code}`
+               )
+               if (response.data.success) {
+                  updateOrg({
+                     variables: {
+                        id: user.organization.id,
+                        _set: {
+                           stripeAccountId: response.data.data.stripeAccountId,
+                        },
+                     },
+                  })
+               }
+            }
          })()
       }
-   }, [location])
+   }, [user.organization, location])
 
    return (
       <div>
