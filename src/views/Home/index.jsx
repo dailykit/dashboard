@@ -35,23 +35,26 @@ const Home = () => {
    React.useEffect(() => {
       if (location.search.includes('code')) {
          const code = new URLSearchParams(location.search).get('code')
-         ;(async () => {
-            if (user?.organization?.id) {
-               const response = await axios.get(
-                  `${process.env.REACT_APP_DAILYKEY_URL}/api/payments/account-id/?code=${code}`
-               )
-               if (response.data.success) {
-                  updateOrg({
-                     variables: {
-                        id: user.organization.id,
-                        _set: {
-                           stripeAccountId: response.data.data.stripeAccountId,
+         if (code) {
+            ;(async () => {
+               if (user?.organization?.id) {
+                  const response = await axios.get(
+                     `${process.env.REACT_APP_DAILYKEY_URL}/api/account-id/?code=${code}`
+                  )
+                  if (response.data.success) {
+                     updateOrg({
+                        variables: {
+                           id: user.organization.id,
+                           _set: {
+                              stripeAccountId:
+                                 response.data.data.stripeAccountId,
+                           },
                         },
-                     },
-                  })
+                     })
+                  }
                }
-            }
-         })()
+            })()
+         }
       }
    }, [user.organization, location])
 

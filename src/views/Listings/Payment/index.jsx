@@ -27,7 +27,7 @@ export const Payment = () => {
       ;(async () => {
          try {
             const response = await axios.get(
-               `${process.env.REACT_APP_DAILYKEY_URL}/api/payments/login-link?accountId=${state.organization.stripeAccountId}`
+               `${process.env.REACT_APP_DAILYKEY_URL}/api/login-link?accountId=${state.organization.stripeAccountId}`
             )
             if (response.data.success) {
                setLoginUrl(response.data.data.link.url)
