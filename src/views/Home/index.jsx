@@ -38,7 +38,7 @@ const Home = () => {
          ;(async () => {
             if (user?.organization?.id) {
                const response = await axios.get(
-                  `http://localhost:4000/api/payments/account-id/?code=${code}`
+                  `${process.env.REACT_APP_DAILYKEY_URL}/api/payments/account-id/?code=${code}`
                )
                if (response.data.success) {
                   updateOrg({
