@@ -10,7 +10,7 @@ import { StyledSection, StyledIllo, StyledButton } from './styled'
 
 import { Modal } from '../../components'
 
-import { INITIATE_SETUP, INSTANCE_STATUS, UPDATE_ORG } from '../../graphql'
+import { INITIATE_SETUP, INSTANCE_STATUS } from '../../graphql'
 
 const Home = () => {
    const { addTab } = useTabs()
