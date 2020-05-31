@@ -24,18 +24,20 @@ export const Payment = () => {
    }, [history, tabs])
 
    React.useEffect(() => {
-      ;(async () => {
-         try {
-            const response = await axios.get(
-               `${process.env.REACT_APP_DAILYKEY_URL}/api/login-link?accountId=${state.organization.stripeAccountId}`
-            )
-            if (response.data.success) {
-               setLoginUrl(response.data.data.link.url)
+      if (state.organization?.stripeAccountId) {
+         ;(async () => {
+            try {
+               const response = await axios.get(
+                  `${process.env.REACT_APP_DAILYKEY_URL}/api/login-link?accountId=${state.organization.stripeAccountId}`
+               )
+               if (response.data.success) {
+                  setLoginUrl(response.data.data.link.url)
+               }
+            } catch (error) {
+               console.log(error.message)
             }
-         } catch (error) {
-            console.log(error.message)
-         }
-      })()
+         })()
+      }
    }, [state.organization])
 
    return (
