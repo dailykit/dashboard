@@ -18,7 +18,6 @@ const Home = () => {
    const { state: user } = React.useContext(UserContext)
    const [status, setStatus] = React.useState(null)
    const [initiateSetup] = useMutation(INITIATE_SETUP)
-   const [updateOrg] = useMutation(UPDATE_ORG)
    const { data: { organization = {} } = {} } = useSubscription(
       INSTANCE_STATUS,
       {
