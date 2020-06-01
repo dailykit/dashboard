@@ -2,12 +2,14 @@ import styled, { css } from 'styled-components'
 
 export const StyledSidebar = styled.aside(
    ({ visible }) => css`
+      left: 0;
       top: 40px;
       bottom: 0;
       width: 240px;
+      display: flex;
       position: absolute;
       background: #003541;
-      left: 0;
+      flex-direction: column;
       transition: 0.3s ease-in-out;
       transform: translateX(${visible ? '0' : '-240px'});
    `
@@ -22,7 +24,9 @@ export const StyledHeading = styled.h3`
    letter-spacing: 0.5px;
 `
 
-export const StyledList = styled.ul``
+export const StyledList = styled.ul`
+   flex: 1;
+`
 
 export const StyledListItem = styled.li`
    color: #fff;

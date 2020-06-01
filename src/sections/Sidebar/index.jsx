@@ -2,6 +2,7 @@ import React from 'react'
 
 // State
 import { useTabs } from '../../store/tabs'
+import { useAuth } from '../../store/auth'
 
 // Styled
 import {
@@ -13,6 +14,7 @@ import {
 
 const Sidebar = ({ visible, toggleSidebar }) => {
    const { addTab } = useTabs()
+   const { logout } = useAuth()
    return (
       <StyledSidebar visible={visible} onClick={() => toggleSidebar(false)}>
          <StyledHeading>Listings</StyledHeading>
@@ -37,6 +39,13 @@ const Sidebar = ({ visible, toggleSidebar }) => {
                Device Hub
             </StyledListItem>
          </StyledList>
+         <button
+            type="button"
+            onClick={() => logout()}
+            className="m-3 h-10 bg-red-500 text-white rounded"
+         >
+            Sign Out
+         </button>
       </StyledSidebar>
    )
 }
