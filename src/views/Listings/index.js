@@ -1,4 +1,5 @@
 export * from './Account'
 export * from './Payment'
 export * from './Instance'
+export * from './DeviceHub'
 export * from './DeliveryPartnerships'

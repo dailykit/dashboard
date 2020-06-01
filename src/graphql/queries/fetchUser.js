@@ -13,6 +13,7 @@ export const FETCH_USER = gql`
             organizationUrl
             organizationName
             instanceStatus
+            printNodeKey
          }
       }
    }

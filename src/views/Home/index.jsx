@@ -143,6 +143,19 @@ const Home = () => {
                   <h1 className="text-xl text-teal-800">Payment</h1>
                   <p className="text-gray-500">Manage your payments account.</p>
                </div>
+               <div
+                  tabIndex="0"
+                  role="button"
+                  className="border border-l-4 rounded p-3 focus:outline-none focus:border-teal-600 hover:border-teal-600"
+                  onClick={() => addTab('Device Hub', '/device')}
+                  onKeyDown={e =>
+                     [32, 13].includes(e.keyCode) &&
+                     addTab('Device Hub', '/device')
+                  }
+               >
+                  <h1 className="text-xl text-teal-800">Device Hub</h1>
+                  <p className="text-gray-500">Manage your device account.</p>
+               </div>
             </main>
          </StyledSection>
       </div>

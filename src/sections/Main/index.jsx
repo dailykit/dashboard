@@ -7,6 +7,7 @@ import {
    Account,
    Payment,
    Instance,
+   DeviceHub,
    DeliveryPartnerships,
 } from '../../views'
 
@@ -28,6 +29,9 @@ const Main = () => {
             </Route>
             <Route path="/payment" exact>
                <Payment />
+            </Route>
+            <Route path="/device" exact>
+               <DeviceHub />
             </Route>
          </Switch>
       </main>

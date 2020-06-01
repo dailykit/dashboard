@@ -33,6 +33,9 @@ const Sidebar = ({ visible, toggleSidebar }) => {
             <StyledListItem onClick={() => addTab('Payment', '/payment')}>
                Payment
             </StyledListItem>
+            <StyledListItem onClick={() => addTab('Device Hub', '/device')}>
+               Device Hub
+            </StyledListItem>
          </StyledList>
       </StyledSidebar>
    )
