@@ -1,16 +1,16 @@
 import gql from 'graphql-tag'
 
 export const FETCH_DELIVERY_PARTNERSHIPS = gql`
-   subscription partnerships_deliveryPartnership(
+   subscription deliveryPartnerships(
       $where: partnerships_deliveryPartnership_bool_exp
    ) {
-      partnerships_deliveryPartnership(where: $where) {
+      deliveryPartnerships: partnerships_deliveryPartnership(where: $where) {
          id
          keys
          isActive
          isApproved
          webhookUrl
-         deliveryCompany {
+         company: deliveryCompany {
             id
             name
             assets

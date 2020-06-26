@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { useSubscription, useMutation } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
 
@@ -22,19 +23,33 @@ const normalize = text =>
       .replace(/\s{2,}/g, ' ')
       .trim()
 
+const isCredsValid = async (token, customer) => {
+   const { data } = await axios.get(
+      'https://platform.dailykit.org/webhooks/delivery/verify',
+      {
+         params: {
+            token,
+            customer,
+         },
+      }
+   )
+   if (data.status === 200) {
+      return true
+   }
+   return false
+}
+
 export const DeliveryPartnerships = () => {
    const history = useHistory()
    const { tabs } = useTabs()
    const [isModalVisible, setIsModalVisible] = React.useState(false)
    const [selected, setSelected] = React.useState({})
+   const [credStatus, setCredStatus] = React.useState({})
    const [status, setStatus] = React.useState('LOADING')
    const [partnerships, setPartnerships] = React.useState([])
    const [updateDeliverPartnership] = useMutation(UPDATE_DELIVERY_PARTNERSHIPS)
    const { state: user } = React.useContext(UserContext)
-   const {
-      loading,
-      data: { partnerships_deliveryPartnership = [] } = {},
-   } = useSubscription(FETCH_DELIVERY_PARTNERSHIPS, {
+   const { loading } = useSubscription(FETCH_DELIVERY_PARTNERSHIPS, {
       variables: {
          where: {
             organizationId: {
@@ -42,18 +57,14 @@ export const DeliveryPartnerships = () => {
             },
          },
       },
+      onSubscriptionData: ({ subscriptionData: { data = {} } = {} }) => {
+         const { deliveryPartnerships = [] } = data
+         if (deliveryPartnerships.length > 0) {
+            setStatus('SUCCESS')
+            setPartnerships(deliveryPartnerships)
+         }
+      },
    })
-
-   React.useEffect(() => {
-      if (
-         !loading &&
-         user.organization.id &&
-         Array.isArray(partnerships_deliveryPartnership)
-      ) {
-         setStatus('SUCCESS')
-         setPartnerships(partnerships_deliveryPartnership)
-      }
-   }, [user, loading, partnerships_deliveryPartnership])
 
    React.useEffect(() => {
       const tab =
@@ -63,72 +74,108 @@ export const DeliveryPartnerships = () => {
       }
    }, [history, tabs])
 
-   const handleChange = e => {
+   const handleChange = async e => {
       e.preventDefault()
       const data = new FormData(e.target)
-      setIsModalVisible(false)
-      updateDeliverPartnership({
-         variables: {
-            id: selected.id,
-            _set: {
-               isActive: true,
-               isApproved: true,
-               keys: Object.fromEntries(data),
-            },
-         },
-      })
+      const keys = Object.fromEntries(data)
+      if (keys.apiKey && keys.customerId) {
+         const isValid = await isCredsValid(keys.apiKey, keys.customerId)
+         if (isValid) {
+            setCredStatus({
+               success: true,
+               message: 'Successfully verified credentials!',
+            })
+            setIsModalVisible(false)
+            setCredStatus({})
+            updateDeliverPartnership({
+               variables: {
+                  id: selected.id,
+                  _set: {
+                     keys,
+                     isActive: true,
+                     isApproved: true,
+                  },
+               },
+            })
+            setCredStatus({})
+         } else {
+            setCredStatus({
+               success: false,
+               error: 'Invalid credentials provided!',
+            })
+         }
+      } else {
+         setCredStatus({
+            success: false,
+            error: 'Please fill in the credentials',
+         })
+      }
    }
 
-   if (status === 'LOADING')
+   if (loading)
       return (
          <Wrapper>
             <Loader />
          </Wrapper>
       )
-   if (status === 'SUCCESS')
-      return (
-         <Wrapper>
-            {isModalVisible && (
-               <Modal>
-                  <h1 className="text-xl text-teal-700 border-b pb-3 mb-3">
-                     Edit Partnership: {selected.deliveryCompany.name}
-                  </h1>
-                  <form onSubmit={handleChange}>
-                     {Object.keys(selected.keys).map(key => (
-                        <div key={key} className="flex flex-col mb-3">
-                           <label
-                              htmlFor={key}
-                              className="uppercase text-gray-500 text-sm tracking-wider"
-                           >
-                              {normalize(key)}
-                           </label>
-                           <input
-                              type="text"
-                              name={key}
-                              className="border rounded px-2 h-8 mt-1"
-                              defaultValue={selected.keys[key]}
-                           />
-                        </div>
-                     ))}
-                     <button
-                        type="submit"
-                        className="bg-teal-500 text-white rounded px-2 h-8 mr-2"
-                     >
-                        Save
-                     </button>
-                     <button
-                        type="button"
-                        onClick={() => setIsModalVisible(false)}
-                        className="border border-gray-400 rounded px-2 h-8"
-                     >
-                        Close
-                     </button>
-                  </form>
-               </Modal>
-            )}
-            <h1 className="text-xl text-teal-700 border-b pb-3 mb-4">
-               Delivery Partnerships
-            </h1>
+   return (
+      <Wrapper>
+         {isModalVisible && (
+            <Modal>
+               <h1 className="text-xl text-teal-700 border-b pb-3 mb-3">
+                  Edit Partnership: {selected.company.name}
+               </h1>
+               <form onSubmit={handleChange}>
+                  {Object.keys(selected.keys).map(key => (
+                     <div key={key} className="flex flex-col mb-3">
+                        <label
+                           htmlFor={key}
+                           className="uppercase text-gray-500 text-sm tracking-wider"
+                        >
+                           {normalize(key)}
+                        </label>
+                        <input
+                           type="text"
+                           name={key}
+                           className="border rounded px-2 h-8 mt-1"
+                           defaultValue={selected.keys[key]}
+                        />
+                     </div>
+                  ))}
+                  <footer className="flex items-center justify-between">
+                     <aside>
+                        <button
+                           type="submit"
+                           className="bg-teal-500 text-white rounded px-2 h-8 mr-2"
+                        >
+                           Save
+                        </button>
+                        <button
+                           type="button"
+                           onClick={() =>
+                              setIsModalVisible(false) || setCredStatus({})
+                           }
+                           className="border border-gray-400 rounded px-2 h-8"
+                        >
+                           Close
+                        </button>
+                     </aside>
+                     {credStatus.success && (
+                        <span className="text-green-500">
+                           {credStatus.message}
+                        </span>
+                     )}
+                     {!credStatus.success && (
+                        <span className="text-red-500">{credStatus.error}</span>
+                     )}
+                  </footer>
+               </form>
+            </Modal>
+         )}
+         <h1 className="text-xl text-teal-700 border-b pb-3 mb-4">
+            Delivery Partnerships
+         </h1>
+         {status === 'SUCCESS' && (
             <ul className="grid grid-cols-2 gap-3">
                {partnerships.map(partnership => (
                   <li
@@ -153,19 +200,20 @@ export const DeliveryPartnerships = () => {
                      <div className="my-3 flex items-center">
                         <img
                            className="w-12 rounded-full mr-2"
-                           src={partnership.deliveryCompany.assets.logo}
-                           alt={partnership.deliveryCompany.name}
+                           src={partnership.company.assets.logo}
+                           alt={partnership.company.name}
                         />
                         <h2 className="text-xl text-teal-700">
-                           {partnership.deliveryCompany.name}
+                           {partnership.company.name}
                         </h2>
                      </div>
                      <p className="text-gray-700">
-                        {partnership.deliveryCompany.description.short}
+                        {partnership.company.description.short}
                      </p>
                   </li>
                ))}
             </ul>
-         </Wrapper>
-      )
+         )}
+      </Wrapper>
+   )
 }
