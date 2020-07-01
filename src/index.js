@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { ApolloClient } from 'apollo-client'
+import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { split } from 'apollo-link'
@@ -18,10 +19,24 @@ import { UserProvider } from './store/user'
 import './index.css'
 import './styles.css'
 
+const authLink = setContext((_, { headers }) => {
+   return {
+      headers: {
+         ...headers,
+         'x-hasura-admin-secret': `${process.env.REACT_APP_ADMIN_SECRET}`,
+      },
+   }
+})
+
 const wsLink = new WebSocketLink({
    uri: process.env.REACT_APP_DAILYCLOAK_SUBS_URL,
    options: {
       reconnect: true,
+      connectionParams: {
+         headers: {
+            'x-hasura-admin-secret': `${process.env.REACT_APP_ADMIN_SECRET}`,
+         },
+      },
    },
 })
 
@@ -38,7 +53,7 @@ const link = split(
       )
    },
    wsLink,
-   httpLink
+   authLink.concat(httpLink)
 )
 
 const client = new ApolloClient({
