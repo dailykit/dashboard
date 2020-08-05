@@ -38,6 +38,13 @@ const Sidebar = ({ visible, toggleSidebar }) => {
             <StyledListItem onClick={() => addTab('Device Hub', '/device')}>
                Device Hub
             </StyledListItem>
+            <StyledListItem
+               onClick={() =>
+                  addTab('Email Integrations', '/email-integrations')
+               }
+            >
+               Email Integrations
+            </StyledListItem>
          </StyledList>
          <button
             type="button"

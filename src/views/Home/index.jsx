@@ -156,6 +156,23 @@ const Home = () => {
                   <h1 className="text-xl text-teal-800">Device Hub</h1>
                   <p className="text-gray-500">Manage your device account.</p>
                </div>
+               <div
+                  tabIndex="0"
+                  role="button"
+                  className="border border-l-4 rounded p-3 focus:outline-none focus:border-teal-600 hover:border-teal-600"
+                  onClick={() =>
+                     addTab('Email Integrations', '/email-integrations')
+                  }
+                  onKeyDown={e =>
+                     [32, 13].includes(e.keyCode) &&
+                     addTab('Email Integrations', '/email-integrations')
+                  }
+               >
+                  <h1 className="text-xl text-teal-800">Email Integrations</h1>
+                  <p className="text-gray-500">
+                     Manage your email integrations.
+                  </p>
+               </div>
             </main>
          </StyledSection>
       </div>

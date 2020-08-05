@@ -8,6 +8,7 @@ import {
    Payment,
    Instance,
    DeviceHub,
+   EmailIntegrations,
    DeliveryPartnerships,
 } from '../../views'
 
@@ -32,6 +33,9 @@ const Main = () => {
             </Route>
             <Route path="/device" exact>
                <DeviceHub />
+            </Route>
+            <Route path="/email-integrations" exact>
+               <EmailIntegrations />
             </Route>
          </Switch>
       </main>
