@@ -14,7 +14,8 @@ export const EMAILS = gql`
          domain
          txtRecord
          isVerified
-         cnameRecords
+         dkimRecord
+         keySelector
       }
    }
 `

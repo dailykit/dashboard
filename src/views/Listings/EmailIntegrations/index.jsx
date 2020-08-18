@@ -60,6 +60,7 @@ export const EmailIntegrations = () => {
             await axios.post(URL, {
                id: node.id,
                domain: node.domain,
+               keySelector: node.keySelector,
             })
          })
       )
@@ -192,29 +193,34 @@ export const EmailIntegrations = () => {
                               </TableRow>
                            </TableHead>
                            <TableBody>
-                              {node.cnameRecords &&
-                                 node.cnameRecords.map(record => (
-                                    <TableRow key={record.value}>
-                                       <TableCell
-                                          title="Click to copy"
-                                          onClick={() => copyText(record.name)}
-                                       >
-                                          <span>{record.name}</span>
-                                       </TableCell>
-                                       <TableCell
-                                          title="Click to copy"
-                                          onClick={() => copyText(record?.type)}
-                                       >
-                                          <span> {record.type}</span>
-                                       </TableCell>
-                                       <TableCell
-                                          title="Click to copy"
-                                          onClick={() => copyText(record.value)}
-                                       >
-                                          <span>{record.value}</span>
-                                       </TableCell>
-                                    </TableRow>
-                                 ))}
+                              {node.dkimRecord && (
+                                 <TableRow>
+                                    <TableCell
+                                       title="Click to copy"
+                                       onClick={() =>
+                                          copyText(node?.dkimRecord?.name)
+                                       }
+                                    >
+                                       <span>{node?.dkimRecord?.name}</span>
+                                    </TableCell>
+                                    <TableCell
+                                       title="Click to copy"
+                                       onClick={() =>
+                                          copyText(node?.dkimRecord?.type)
+                                       }
+                                    >
+                                       <span>{node?.dkimRecord?.type}</span>
+                                    </TableCell>
+                                    <TableCell
+                                       title="Click to copy"
+                                       onClick={() =>
+                                          copyText(node?.dkimRecord?.name)
+                                       }
+                                    >
+                                       <span>{node?.dkimRecord?.value}</span>
+                                    </TableCell>
+                                 </TableRow>
+                              )}
                               {node.txtRecord && (
                                  <TableRow>
                                     <TableCell
