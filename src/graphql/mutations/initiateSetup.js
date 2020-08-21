@@ -1,17 +1,13 @@
 import gql from 'graphql-tag'
 
 export const INITIATE_SETUP = gql`
-   mutation updateOrganizations(
-      $instanceRequested: Boolean
-      $email: String_comparison_exp
+   mutation updateOrganization(
+      $id: Int!
+      $_set: organization_organization_set_input!
    ) {
-      updateOrganizations(
-         where: { organizationAdmins: { email: $email } }
-         _set: { instanceRequested: $instanceRequested }
-      ) {
-         returning {
-            id
-         }
+      updateOrganization(pk_columns: { id: $id }, _set: $_set) {
+         id
+         instanceRequested
       }
    }
 `

@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
-import { Gif } from '@giphy/react-components'
+import { Grid } from '@giphy/react-components'
 import { useLocation } from 'react-router-dom'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useMutation, useSubscription } from '@apollo/react-hooks'
@@ -158,7 +158,9 @@ const Home = () => {
                </div>
             </main>
 
-            {status && status !== 'SETUP_COMPLETED' && <InitiateModal />}
+            {status && status !== 'SETUP_COMPLETED' && (
+               <InitiateModal setStatus={setStatus} />
+            )}
          </StyledSection>
       </div>
    )
@@ -167,65 +169,60 @@ const Home = () => {
 export default Home
 
 const giphy = new GiphyFetch(process.env.REACT_APP_GIPHY_KEY)
+const sleep = ms => {
+   return new Promise(resolve => setTimeout(resolve, ms))
+}
 
 const InitiateModal = () => {
-   const [gifs, setGifs] = React.useState([])
-   const [current, setCurrent] = React.useState(0)
-   const [initiateSetup] = useMutation(INITIATE_SETUP)
+   const [keyword, setKeyword] = React.useState('button')
    const { state: user } = React.useContext(UserContext)
-   const [isClicked, setIsClicked] = React.useState(false)
-
-   React.useEffect(() => {
-      ;(async () => {
-         try {
-            const gifs = [
-               { tag: 'launch', id: 'tXLpxypfSXvUc' },
-               { tag: 'waiting', id: 'tXL4FHPSnVJ0A' },
-               { tag: 'popcorn', id: 'nWg4h2IK6jYRO' },
-               { tag: 'bean watch', id: 'QBd2kLB5qDmysEXre9' },
-               { tag: 'dancing', id: 'F9hQLAVhWnL56' },
-               { tag: 'pigeon walking', id: '3o7WTEpjuzzkhNYCMU' },
-               { tag: 'celebrate', id: 'lMameLIF8voLu8HxWV' },
-            ]
-
-            const gifsData = await Promise.all(
-               gifs.map(async gif => {
-                  const { data } = await giphy.gif(gif.id)
-                  return data
-               })
-            )
-            setGifs(gifsData)
-         } catch (error) {
-            console.log(error.message)
+   const [initiateSetup] = useMutation(INITIATE_SETUP, {
+      onCompleted: async ({ updateOrganization = {} }) => {
+         const { instanceRequested } = updateOrganization
+         if (instanceRequested) {
+            setKeyword('launch')
+            await sleep(120000)
+            setKeyword('popcorn')
+            await sleep(180000)
+            setKeyword('loading')
+            await sleep(180000)
+            setKeyword('cooking')
+            await sleep(300000)
+            setKeyword('excitement')
          }
-      })()
-   }, [])
-
-   React.useEffect(() => {
-      const interval = setInterval(() => {
-         const next = (current + 1) % gifs.length
-         setCurrent(next)
-      }, 10000)
-      return () => clearInterval(interval)
-   }, [current, gifs])
+      },
+   })
+   const { data: { organization = {} } = {} } = useSubscription(
+      INSTANCE_STATUS,
+      {
+         variables: { id: user.organization.id },
+      }
+   )
 
    return (
       <Modal>
          <div className="text-center">
             <StyledIllo>
-               {gifs.length > 0 && <Gif gif={gifs[current]} width={420} />}
+               {keyword === 'button' && <RenderGifs keyword="button" />}
+               {keyword === 'launch' && <RenderGifs keyword="launch" />}
+               {keyword === 'popcorn' && <RenderGifs keyword="popcorn" />}
+               {keyword === 'loading' && <RenderGifs keyword="loading" />}
+               {keyword === 'cooking' && <RenderGifs keyword="cooking" />}
+               {keyword === 'excitement' && <RenderGifs keyword="excitement" />}
+               {organization.instanceStatus === 'SETUP_COMPLETED' && (
+                  <RenderGifs keyword="celebrate" />
+               )}
                <StyledCredit>
                   <img src="/giphy.png" alt="Powered by Giphy" />
                </StyledCredit>
             </StyledIllo>
-            {!isClicked && (
+            {!organization?.instanceRequested && (
                <StyledButton
                   onClick={() =>
-                     setIsClicked(true) ||
                      initiateSetup({
                         variables: {
-                           instanceRequested: true,
-                           email: { _eq: user.email },
+                           _set: { instanceRequested: true },
+                           id: user.organization.id,
                         },
                      })
                   }
@@ -238,8 +235,14 @@ const InitiateModal = () => {
    )
 }
 
+const RenderGifs = ({ keyword }) => {
+   return (
+      <Grid width={682} columns={3} fetchGifs={() => giphy.search(keyword)} />
+   )
+}
+
 const StyledCredit = styled.span`
-   position: absolute;
+   position: fixed;
    bottom: 12px;
    right: 12px;
    img {

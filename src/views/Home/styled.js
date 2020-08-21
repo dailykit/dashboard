@@ -17,8 +17,9 @@ export const StyledSection = styled.section(
 export const StyledIllo = styled.div(
    () => css`
       height: 480px;
+      overflow-y: auto;
       position: relative;
-      ${tw`bg-gray-100 rounded flex items-center justify-center`}
+      ${tw`bg-gray-100 rounded`}
    `
 )
 
