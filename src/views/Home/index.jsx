@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import styled from 'styled-components'
 import { Gif } from '@giphy/react-components'
 import { useLocation } from 'react-router-dom'
 import { GiphyFetch } from '@giphy/js-fetch-api'
@@ -212,7 +213,10 @@ const InitiateModal = () => {
       <Modal>
          <div className="text-center">
             <StyledIllo>
-               {gifs.length > 0 && <Gif gif={gifs[current]} width={300} />}
+               {gifs.length > 0 && <Gif gif={gifs[current]} width={420} />}
+               <StyledCredit>
+                  <img src="/giphy.png" alt="Powered by Giphy" />
+               </StyledCredit>
             </StyledIllo>
             {!isClicked && (
                <StyledButton
@@ -233,3 +237,12 @@ const InitiateModal = () => {
       </Modal>
    )
 }
+
+const StyledCredit = styled.span`
+   position: absolute;
+   bottom: 12px;
+   right: 12px;
+   img {
+      height: 16px;
+   }
+`
