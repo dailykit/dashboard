@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
+import { Gif } from '@giphy/react-components'
 import { useLocation } from 'react-router-dom'
+import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useMutation, useSubscription } from '@apollo/react-hooks'
 
 import { useTabs } from '../../store/tabs'
@@ -17,7 +19,6 @@ const Home = () => {
    const location = useLocation()
    const { state: user } = React.useContext(UserContext)
    const [status, setStatus] = React.useState(null)
-   const [initiateSetup] = useMutation(INITIATE_SETUP)
    const { data: { organization = {} } = {} } = useSubscription(
       INSTANCE_STATUS,
       {
@@ -46,25 +47,6 @@ const Home = () => {
 
    return (
       <div>
-         {status && status !== 'SETUP_COMPLETED' && (
-            <Modal>
-               <div className="text-center">
-                  <StyledIllo>Illustration stuff</StyledIllo>
-                  <StyledButton
-                     onClick={() =>
-                        initiateSetup({
-                           variables: {
-                              instanceRequested: true,
-                              email: { _eq: user.email },
-                           },
-                        })
-                     }
-                  >
-                     Initiate Setup
-                  </StyledButton>
-               </div>
-            </Modal>
-         )}
          <StyledSection>
             <div className="flex justify-between">
                <section>
@@ -174,9 +156,80 @@ const Home = () => {
                   </p>
                </div>
             </main>
+
+            {status && status !== 'SETUP_COMPLETED' && <InitiateModal />}
          </StyledSection>
       </div>
    )
 }
 
 export default Home
+
+const giphy = new GiphyFetch(process.env.REACT_APP_GIPHY_KEY)
+
+const InitiateModal = () => {
+   const [gifs, setGifs] = React.useState([])
+   const [current, setCurrent] = React.useState(0)
+   const [initiateSetup] = useMutation(INITIATE_SETUP)
+   const { state: user } = React.useContext(UserContext)
+   const [isClicked, setIsClicked] = React.useState(false)
+
+   React.useEffect(() => {
+      ;(async () => {
+         try {
+            const gifs = [
+               { tag: 'launch', id: 'tXLpxypfSXvUc' },
+               { tag: 'waiting', id: 'tXL4FHPSnVJ0A' },
+               { tag: 'popcorn', id: 'nWg4h2IK6jYRO' },
+               { tag: 'bean watch', id: 'QBd2kLB5qDmysEXre9' },
+               { tag: 'dancing', id: 'F9hQLAVhWnL56' },
+               { tag: 'pigeon walking', id: '3o7WTEpjuzzkhNYCMU' },
+               { tag: 'celebrate', id: 'lMameLIF8voLu8HxWV' },
+            ]
+
+            const gifsData = await Promise.all(
+               gifs.map(async gif => {
+                  const { data } = await giphy.gif(gif.id)
+                  return data
+               })
+            )
+            setGifs(gifsData)
+         } catch (error) {
+            console.log(error.message)
+         }
+      })()
+   }, [])
+
+   React.useEffect(() => {
+      const interval = setInterval(() => {
+         const next = (current + 1) % gifs.length
+         setCurrent(next)
+      }, 10000)
+      return () => clearInterval(interval)
+   }, [current, gifs])
+
+   return (
+      <Modal>
+         <div className="text-center">
+            <StyledIllo>
+               {gifs.length > 0 && <Gif gif={gifs[current]} width={300} />}
+            </StyledIllo>
+            {!isClicked && (
+               <StyledButton
+                  onClick={() =>
+                     setIsClicked(true) ||
+                     initiateSetup({
+                        variables: {
+                           instanceRequested: true,
+                           email: { _eq: user.email },
+                        },
+                     })
+                  }
+               >
+                  Initiate Setup
+               </StyledButton>
+            )}
+         </div>
+      </Modal>
+   )
+}
