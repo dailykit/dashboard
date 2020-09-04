@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import tw from 'tailwind.macro'
-import { useHistory } from 'react-router-dom'
+import copy from 'copy-to-clipboard'
 import styled, { css } from 'styled-components'
 
 import { useTabs } from '../../../store/tabs'
@@ -11,17 +11,15 @@ import { Wrapper } from '../styled'
 import { UserContext } from '../../../store/user'
 
 export const DeviceHub = () => {
-   const history = useHistory()
-   const { tabs } = useTabs()
+   const { tab, addTab } = useTabs()
    const [status, setStatus] = React.useState('IDLE')
    const { state } = React.useContext(UserContext)
 
    React.useEffect(() => {
-      const tab = tabs.find(item => item.path === `/device`) || {}
-      if (!Object.prototype.hasOwnProperty.call(tab, 'path')) {
-         history.push('/')
+      if (!tab) {
+         addTab('Device Hub', '/device')
       }
-   }, [history, tabs])
+   }, [tab])
 
    const initiateAccountSetup = async () => {
       try {
@@ -33,9 +31,10 @@ export const DeviceHub = () => {
          setStatus('SUCCESS')
       } catch (error) {
          setStatus('ERROR')
-         console.log(error.message)
       }
    }
+
+   const copyText = text => copy(text)
 
    return (
       <Wrapper>
@@ -47,6 +46,62 @@ export const DeviceHub = () => {
                </StyledButton>
             )}
          </header>
+         {state.organization.printNodeKey && (
+            <main>
+               <Section className="flex flex-col items-start">
+                  <h1 className="text-xl text-teal-800">
+                     Print Node Credentials
+                  </h1>
+                  <button
+                     type="button"
+                     title="Click to copy"
+                     onClick={() => copyText(state.email)}
+                     className="text-gray-500 hover:bg-gray-100"
+                  >
+                     Email: {state.email}
+                  </button>
+                  <button
+                     type="button"
+                     title="Click to copy"
+                     onClick={() => copyText(state.printNodePassword)}
+                     className="text-gray-500 hover:bg-gray-100"
+                  >
+                     Password: {state.printNodePassword}
+                  </button>
+               </Section>
+               <Section>
+                  <h1 className="text-xl text-teal-800">Print Node Links</h1>
+                  <LinkItem
+                     target="__blank"
+                     rel="noopener noreferrer"
+                     href="https://www.printnode.com/en/download"
+                  >
+                     Download Print Node
+                  </LinkItem>
+                  <LinkItem
+                     target="__blank"
+                     rel="noopener noreferrer"
+                     href="https://www.printnode.com/en/docs/installation"
+                  >
+                     Installing Print Node
+                  </LinkItem>
+                  <LinkItem
+                     target="__blank"
+                     rel="noopener noreferrer"
+                     href="https://www.printnode.com/en/docs/supported-printers"
+                  >
+                     View supported printers
+                  </LinkItem>
+                  <LinkItem
+                     target="__blank"
+                     rel="noopener noreferrer"
+                     href="https://www.printnode.com/en/docs/supported-scales"
+                  >
+                     View supported scales
+                  </LinkItem>
+               </Section>
+            </main>
+         )}
       </Wrapper>
    )
 }
@@ -56,3 +111,18 @@ const StyledButton = styled.button(
       ${tw`border border-green-300 hover:border-green-500 hover:bg-green-500 hover:text-white rounded flex items-center px-3 h-10`}
    `
 )
+
+const Section = styled.section`
+   ${tw`border border-l-4 rounded p-3`}
+   + section {
+      margin-top: 16px;
+   }
+`
+
+const LinkItem = styled.a`
+   color: #376ae5;
+   text-decoration: underline;
+   + a {
+      margin-left: 16px;
+   }
+`

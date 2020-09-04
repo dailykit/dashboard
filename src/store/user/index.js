@@ -5,6 +5,7 @@ export const UserContext = React.createContext()
 const initialState = {
    name: '',
    email: '',
+   printNodePassword: '',
    organization: {
       id: null,
       url: '',
@@ -20,8 +21,9 @@ const reducers = (state, { type, payload }) => {
       case 'SET_USER': {
          return {
             ...state,
-            name: `${payload.firstName} ${payload.lastName}`,
             email: payload.email,
+            printNodePassword: payload.printNodePassword,
+            name: `${payload.firstName} ${payload.lastName}`,
             organization: {
                id: payload.organization.id,
                url: payload.organization.organizationUrl,

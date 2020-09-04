@@ -7,6 +7,7 @@ export const FETCH_USER = gql`
          email
          firstName
          lastName
+         printNodePassword
          organization {
             id
             stripeAccountId

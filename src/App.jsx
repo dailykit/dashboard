@@ -21,11 +21,19 @@ import { FETCH_USER } from './graphql'
 import { StyledWrapper } from './styled'
 
 const App = () => {
-   const { user } = useAuth()
    const { dispatch } = React.useContext(UserContext)
-   const { isAuthenticated, isInitialized } = useAuth()
+   const { user, isAuthenticated, isInitialized } = useAuth()
    const [isSidebarVisible, toggleSidebar] = React.useState(false)
-   const [fetchUser, { loading, data = {} }] = useLazyQuery(FETCH_USER)
+   const [fetchUser, { loading }] = useLazyQuery(FETCH_USER, {
+      onCompleted: ({ organizationAdmins = [] }) => {
+         if (
+            Array.isArray(organizationAdmins) &&
+            organizationAdmins.length > 0
+         ) {
+            dispatch({ type: 'SET_USER', payload: organizationAdmins[0] })
+         }
+      },
+   })
 
    React.useEffect(() => {
       if (user.email) {
@@ -39,12 +47,7 @@ const App = () => {
       }
    }, [user])
 
-   React.useEffect(() => {
-      if (!loading && Array.isArray(data?.organizationAdmins)) {
-         dispatch({ type: 'SET_USER', payload: data?.organizationAdmins[0] })
-      }
-   }, [loading, data])
-
+   if (loading) return <Loader />
    if (isInitialized === false) return <Loader />
    if (isAuthenticated === false) return "You're not logged in!"
    return (

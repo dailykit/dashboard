@@ -25,8 +25,8 @@ export const AuthProvider = ({ children }) => {
          onLoad: 'login-required',
          promiseType: 'native',
       })
+      setIsInitialized(true)
       if (authenticated) {
-         setIsInitialized(true)
          setIsAuthenticated(authenticated)
          const profile = await keycloak.loadUserProfile()
          setUser(profile)
