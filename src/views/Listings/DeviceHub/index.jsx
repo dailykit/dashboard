@@ -63,10 +63,12 @@ export const DeviceHub = () => {
                   <button
                      type="button"
                      title="Click to copy"
-                     onClick={() => copyText(state.printNodePassword)}
+                     onClick={() =>
+                        copyText(state.printNodePassword.slice(0, 8))
+                     }
                      className="text-gray-500 hover:bg-gray-100"
                   >
-                     Password: {state.printNodePassword}
+                     Password: {state.printNodePassword.slice(0, 8)}
                   </button>
                </Section>
                <Section>
