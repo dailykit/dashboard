@@ -10,11 +10,13 @@ export const FETCH_USER = gql`
          printNodePassword
          organization {
             id
+            datahubUrl
             stripeAccountId
             organizationUrl
             organizationName
             instanceStatus
             printNodeKey
+            adminSecret
          }
       }
    }

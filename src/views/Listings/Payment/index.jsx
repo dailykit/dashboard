@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios'
 import tw from 'tailwind.macro'
-import { useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import { useTabs } from '../../../store/tabs'
@@ -11,17 +10,15 @@ import { Wrapper } from '../styled'
 import { UserContext } from '../../../store/user'
 
 export const Payment = () => {
-   const history = useHistory()
-   const { tabs } = useTabs()
+   const { tab, addTab } = useTabs()
    const [loginUrl, setLoginUrl] = React.useState('')
    const { state } = React.useContext(UserContext)
 
    React.useEffect(() => {
-      const tab = tabs.find(item => item.path === `/payment`) || {}
-      if (!Object.prototype.hasOwnProperty.call(tab, 'path')) {
-         history.push('/')
+      if (!tab) {
+         addTab('/payment')
       }
-   }, [history, tabs])
+   }, [tab, addTab])
 
    React.useEffect(() => {
       if (state.organization?.stripeAccountId) {
@@ -40,27 +37,65 @@ export const Payment = () => {
       }
    }, [state.organization])
 
+   const updateStripeStatus = async () => {
+      const url = `${
+         new URL(process.env.REACT_APP_DAILYCLOAK_URL).origin
+      }/v1/query`
+
+      const data = {
+         datahubUrl: state.organization.datahubUrl,
+         adminSecret: state.organization.adminSecret,
+         stripeAccountId: state.organization.stripeAccountId,
+      }
+      await axios.post(
+         url,
+         {
+            type: 'invoke_event_trigger',
+            args: {
+               name: 'updateDailyosStripeStatus',
+               payload: { new: data },
+            },
+         },
+         {
+            headers: {
+               'Content-Type': 'application/json; charset=utf-8',
+               'x-hasura-admin-secret':
+                  process.env.REACT_APP_DAILYCLOAK_ADMIN_SECRET,
+            },
+         }
+      )
+   }
+
    return (
       <Wrapper>
          <header className="flex justify-between  border-b pb-3 mb-4">
             <h1 className="text-xl text-teal-700">Payments</h1>
-            {state.organization.stripeAccountId ? (
-               <StyledButton
-                  href={loginUrl}
-                  target="__blank"
-                  rel="noopener noreferrer"
+            <section className="flex">
+               <button
+                  type="button"
+                  onClick={updateStripeStatus}
+                  className="text-gray-800 mr-3 rounded px-3 h-10 hover:bg-gray-300"
                >
-                  Stripe Dashboard
-               </StyledButton>
-            ) : (
-               <StyledButton
-                  target="__blank"
-                  rel="noopener noreferrer"
-                  href={`https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_CA_ID}&scope=read_write&redirect_uri=https://account.dailykit.org`}
-               >
-                  Connect Stripe
-               </StyledButton>
-            )}
+                  Verify Stripe Status
+               </button>
+               {state.organization.stripeAccountId ? (
+                  <StyledButton
+                     href={loginUrl}
+                     target="__blank"
+                     rel="noopener noreferrer"
+                  >
+                     Stripe Dashboard
+                  </StyledButton>
+               ) : (
+                  <StyledButton
+                     target="__blank"
+                     rel="noopener noreferrer"
+                     href={`https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_CA_ID}&scope=read_write&redirect_uri=https://account.dailykit.org`}
+                  >
+                     Connect Stripe
+                  </StyledButton>
+               )}
+            </section>
          </header>
       </Wrapper>
    )
