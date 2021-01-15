@@ -19,13 +19,18 @@ export const Payment = () => {
    React.useEffect(() => {
       if (state.organization?.stripeAccountId) {
          ;(async () => {
-            const { data: { success, data = {} } = {} } = await axios.get(
-               `${process.env.REACT_APP_DAILYKEY_URL}/api/account-details/${state.organization.stripeAccountId}`
-            )
-            if (success) {
-               setAccount(data)
+            try {
+               const { data: { success, data = {} } = {} } = await axios.get(
+                  `${process.env.REACT_APP_DAILYKEY_URL}/api/account-details/${state.organization.stripeAccountId}`
+               )
+               if (success) {
+                  setAccount(data)
+               }
+            } catch (error) {
+               console.log(error)
+            } finally {
+               setIsAccountLoading(false)
             }
-            setIsAccountLoading(false)
          })()
       }
    }, [state.organization])
