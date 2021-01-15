@@ -22,19 +22,13 @@ const Tabs = () => {
                active={tab.path === location.pathname}
             >
                <span title={tab.title}>{tab.title}</span>
-               {tab.path === location.pathname && (
-                  <div
-                     role="button"
-                     tabIndex={0}
-                     title="Close Tab"
-                     onClick={e => removeTab(e, { tab, index })}
-                     onKeyPress={e =>
-                        e.charCode === 32 && removeTab(e, { tab, index })
-                     }
-                  >
-                     <CloseIcon color="#fff" size="20" />
-                  </div>
-               )}
+               <button
+                  type="button"
+                  title="Close Tab"
+                  onClick={e => removeTab(e, { tab, index })}
+               >
+                  <CloseIcon color="#fff" size="20" />
+               </button>
             </StyledTab>
          ))}
       </StyledTabs>

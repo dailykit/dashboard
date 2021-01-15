@@ -21,7 +21,7 @@ export const StyledTab = styled.li(
          line-height: 40px;
          padding-left: 12px;
       }
-      div {
+      button {
          height: 40px;
          display: flex;
          align-items: center;
