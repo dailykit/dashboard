@@ -8,7 +8,7 @@ import { Tabs } from '../../components'
 import { StyledHeader, StyledMenu, StyledNav } from './styled'
 
 // Icons
-import { MenuIcon, LeftIcon, RightIcon } from '../../assets/icons'
+import { MenuIcon, LeftIcon, RightIcon, HomeIcon } from '../../assets/icons'
 
 const Header = ({ toggleSidebar }) => {
    const history = useHistory()
@@ -26,6 +26,13 @@ const Header = ({ toggleSidebar }) => {
             <MenuIcon color="#fff" size="24" />
          </StyledMenu>
          <StyledNav>
+            <button
+               type="button"
+               title="Home"
+               onClick={() => history.push('/')}
+            >
+               <HomeIcon size="20" className="stroke-current text-white" />
+            </button>
             <button
                type="button"
                title="Go Back"
