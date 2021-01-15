@@ -1,16 +1,15 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import { useTabs } from '../../../store/tabs'
 
 export const Account = () => {
-   const history = useHistory()
-   const { tabs } = useTabs()
+   const { tab, addTab } = useTabs()
+
    React.useEffect(() => {
-      const tab = tabs.find(item => item.path === `/account`) || {}
-      if (!Object.prototype.hasOwnProperty.call(tab, 'path')) {
-         history.push('/')
+      if (!tab) {
+         addTab('Accounts', '/account')
       }
-   }, [history, tabs])
+   }, [tab, addTab])
+
    return (
       <div>
          <h1>Accounts</h1>

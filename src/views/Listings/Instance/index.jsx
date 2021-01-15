@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSubscription } from '@apollo/react-hooks'
-import { useHistory } from 'react-router-dom'
 
 import { UserContext } from '../../../store/user'
 import { useTabs } from '../../../store/tabs'
@@ -13,8 +12,7 @@ import { Wrapper } from '../styled'
 import { Loader } from '../../../components'
 
 export const Instance = () => {
-   const history = useHistory()
-   const { tabs } = useTabs()
+   const { tab, addTab } = useTabs()
    const [status, setStatus] = React.useState('LOADING')
    const [instance, setInstance] = React.useState({})
    const { state: user } = React.useContext(UserContext)
@@ -30,18 +28,17 @@ export const Instance = () => {
    )
 
    React.useEffect(() => {
+      if (!tab) {
+         addTab('Instance', '/dailyos')
+      }
+   }, [tab, addTab])
+
+   React.useEffect(() => {
       if ((!loading, Array.isArray(instances) && instances.length === 1)) {
          setStatus('SUCCESS')
          setInstance(instances[0])
       }
    }, [loading, instances])
-
-   React.useEffect(() => {
-      const tab = tabs.find(item => item.path === `/dailyos`) || {}
-      if (!Object.prototype.hasOwnProperty.call(tab, 'path')) {
-         history.push('/')
-      }
-   }, [history, tabs])
 
    if (status === 'LOADING')
       return (

@@ -22,14 +22,17 @@ const reducers = (state, { type, payload }) => {
          }
       }
       case 'ADD_TAB': {
-         const tabExists = state.tabs.find(tab => tab.path === payload.path)
-         if (tabExists) {
-            return state
+         const tabIndex = state.tabs.findIndex(tab => tab.path === payload.path)
+         if (tabIndex === -1) {
+            return {
+               ...state,
+               tabs: [
+                  { title: payload.title, path: payload.path },
+                  ...state.tabs,
+               ],
+            }
          }
-         return {
-            ...state,
-            tabs: [...state.tabs, { title: payload.title, path: payload.path }],
-         }
+         return state
       }
       // Delete Tab
       case 'DELETE_TAB': {
@@ -105,8 +108,6 @@ export const useTabs = () => {
       }
    }
 
-   const doesTabExists = path => tabs.find(node => node.path === path) || false
-
    return {
       tab,
       tabs,
@@ -114,6 +115,5 @@ export const useTabs = () => {
       switchTab,
       removeTab,
       setTabTitle,
-      doesTabExists,
    }
 }

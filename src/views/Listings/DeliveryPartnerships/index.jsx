@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios'
 import { useSubscription, useMutation } from '@apollo/react-hooks'
-import { useHistory } from 'react-router-dom'
 
 import { UserContext } from '../../../store/user'
 import { useTabs } from '../../../store/tabs'
@@ -40,8 +39,7 @@ const isCredsValid = async (token, customer) => {
 }
 
 export const DeliveryPartnerships = () => {
-   const history = useHistory()
-   const { tabs } = useTabs()
+   const { tab, addTab } = useTabs()
    const [isModalVisible, setIsModalVisible] = React.useState(false)
    const [selected, setSelected] = React.useState({})
    const [credStatus, setCredStatus] = React.useState({})
@@ -67,12 +65,10 @@ export const DeliveryPartnerships = () => {
    })
 
    React.useEffect(() => {
-      const tab =
-         tabs.find(item => item.path === `/partnerships/delivery`) || {}
-      if (!Object.prototype.hasOwnProperty.call(tab, 'path')) {
-         history.push('/')
+      if (!tab) {
+         addTab('Delivery Partnerships', '/partnerships/delivery')
       }
-   }, [history, tabs])
+   }, [tab, addTab])
 
    const handleChange = async e => {
       e.preventDefault()

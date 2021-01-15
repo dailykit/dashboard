@@ -2,7 +2,6 @@ import React from 'react'
 import axios from 'axios'
 import tw from 'tailwind.macro'
 import copy from 'copy-to-clipboard'
-import { useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useSubscription, useMutation } from '@apollo/react-hooks'
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@dailykit/ui'
@@ -15,8 +14,7 @@ import { EMAILS, CREATE_AWS_SES } from '../../../graphql'
 import { CaretDown, CaretUp } from '../../../assets/icons'
 
 export const EmailIntegrations = () => {
-   const history = useHistory()
-   const { tabs, addTab } = useTabs()
+   const { tab, addTab } = useTabs()
    const [domain, setDomain] = React.useState('')
    const { state } = React.useContext(UserContext)
    const [panel, togglePanel] = React.useState(null)
@@ -37,11 +35,10 @@ export const EmailIntegrations = () => {
    })
 
    React.useEffect(() => {
-      const tab = tabs.find(item => item.path === `/email-integrations`) || {}
-      if (!Object.prototype.hasOwnProperty.call(tab, 'path')) {
+      if (!tab) {
          addTab('Email Integrations', '/email-integrations')
       }
-   }, [history, tabs, addTab])
+   }, [tab, addTab])
 
    const handleSubmit = () => {
       createAWSSes({
