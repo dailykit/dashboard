@@ -12,34 +12,30 @@ import {
    DeliveryPartnerships,
 } from '../../views'
 
-const Main = () => {
-   return (
-      <main>
-         <Switch>
-            <Route path="/" exact>
-               <Home />
-            </Route>
-            <Route path="/account" exact>
-               <Account />
-            </Route>
-            <Route path="/dailyos" exact>
-               <Instance />
-            </Route>
-            <Route path="/partnerships/delivery" exact>
-               <DeliveryPartnerships />
-            </Route>
-            <Route path="/payment" exact>
-               <Payment />
-            </Route>
-            <Route path="/device" exact>
-               <DeviceHub />
-            </Route>
-            <Route path="/email-integrations" exact>
-               <EmailIntegrations />
-            </Route>
-         </Switch>
-      </main>
-   )
-}
+const Main = () => <main>
+<Switch>
+   <Route path="/" exact>
+      <Home />
+   </Route>
+   <Route path="/account" exact>
+      <Account />
+   </Route>
+   <Route path="/dailyos" exact>
+      <Instance />
+   </Route>
+   <Route path="/partnerships/delivery" exact>
+      <DeliveryPartnerships />
+   </Route>
+   <Route path="/payment" exact>
+      <Payment />
+   </Route>
+   <Route path="/device" exact>
+      <DeviceHub />
+   </Route>
+   <Route path="/email-integrations" exact>
+      <EmailIntegrations />
+   </Route>
+</Switch>
+</main>
 
 export default Main

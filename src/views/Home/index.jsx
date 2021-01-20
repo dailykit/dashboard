@@ -169,9 +169,7 @@ const Home = () => {
 export default Home
 
 const giphy = new GiphyFetch(process.env.REACT_APP_GIPHY_KEY)
-const sleep = ms => {
-   return new Promise(resolve => setTimeout(resolve, ms))
-}
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const InitiateModal = () => {
    const [keyword, setKeyword] = React.useState('button')
@@ -235,11 +233,7 @@ const InitiateModal = () => {
    )
 }
 
-const RenderGifs = ({ keyword }) => {
-   return (
-      <Grid width={682} columns={3} fetchGifs={() => giphy.search(keyword)} />
-   )
-}
+const RenderGifs = ({ keyword }) => <Grid width={682} columns={3} fetchGifs={() => giphy.search(keyword)} />
 
 const StyledCredit = styled.span`
    position: fixed;

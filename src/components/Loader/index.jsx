@@ -2,9 +2,7 @@ import React from 'react'
 
 import { StyledLoader, StyledWrapper } from './styled'
 
-const Loader = () => {
-   return (
-      <StyledWrapper>
+const Loader = () => <StyledWrapper>
          <StyledLoader>
             <div />
             <div />
@@ -12,7 +10,6 @@ const Loader = () => {
             <div />
          </StyledLoader>
       </StyledWrapper>
-   )
-}
+
 
 export default Loader
