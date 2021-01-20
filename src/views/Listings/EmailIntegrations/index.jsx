@@ -97,8 +97,8 @@ export const EmailIntegrations = () => {
    if (aws_ses.length === 0)
       return (
          <Wrapper>
-            <header className="flex justify-between  border-b pb-3 mb-4">
-               <h1 className="text-xl text-teal-700">Email Integrations</h1>
+            <header className="flex justify-between border-b pb-3 mb-4">
+               <h1 className="text-xl text-green-700">Email Integrations</h1>
                <StyledButton onClick={() => toggleModal(true)}>
                   Add Email Domain
                </StyledButton>
@@ -126,7 +126,7 @@ export const EmailIntegrations = () => {
             <section className="flex justify-end mb-4 w-full">
                <button
                   onClick={() => verifyDomain()}
-                  className="rounded bg-orange-500 shadow-lg text-white px-3 py-1 hover:shadow-md"
+                  className="rounded bg-yellow-500 shadow-lg text-white px-3 py-1 hover:shadow-md"
                >
                   {verifyStatus === 'VERIFYING' ? 'Verifying...' : 'Verify'}
                </button>

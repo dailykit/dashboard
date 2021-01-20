@@ -17,7 +17,7 @@
       "react-useportal": "^1.0.13",
       "styled-components": "^5.2.1",
       "subscriptions-transport-ws": "^0.9.18",
-      "tailwind.macro": "^0.5.10"
+      "tailwind.macro": "^1.0.0-alpha.10"
    },
    "scripts": {
       "build:css": "postcss src/tailwind.css -o src/styles.css",

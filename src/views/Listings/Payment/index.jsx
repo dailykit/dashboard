@@ -212,16 +212,12 @@ const Section = styled.section`
    }
 `
 
-const Tick = ({ isActive }) => {
-   return (
-      <TickIcon
-         size={18}
-         className={`stroke-current ${
-            isActive ? 'text-green-700' : 'text-gray-500'
-         }`}
-      />
-   )
-}
+const Tick = ({ isActive }) => <TickIcon
+   size={18}
+   className={`stroke-current ${
+      isActive ? 'text-green-700' : 'text-gray-500'
+   }`}
+/>
 
 const Detail = ({ data = null, label = '' }) => {
    if (!data) return null

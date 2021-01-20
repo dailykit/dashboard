@@ -142,7 +142,7 @@ export const DeliveryPartnerships = () => {
                      <aside>
                         <button
                            type="submit"
-                           className="bg-teal-500 text-white rounded px-2 h-8 mr-2"
+                           className="bg-green-500 text-white rounded px-2 h-8 mr-2"
                         >
                            Save
                         </button>

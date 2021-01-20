@@ -58,7 +58,7 @@ export const Instance = () => {
             {Object.keys(instance).length > 0 ? (
                <div className="border border-l-4 rounded p-3">
                   {instance.active && (
-                     <span className="uppercase text-xs font-medium text-teal-800 rounded bg-teal-200 border border-teal-300 px-1">
+                     <span className="uppercase text-xs font-medium text-green-800 rounded bg-green-200 border border-green-300 px-1">
                         Running
                      </span>
                   )}
