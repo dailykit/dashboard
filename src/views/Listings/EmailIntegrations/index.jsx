@@ -4,7 +4,6 @@ import tw from 'tailwind.macro'
 import copy from 'copy-to-clipboard'
 import styled, { css } from 'styled-components'
 import { useSubscription, useMutation } from '@apollo/client'
-import { Table, TableHead, TableBody, TableRow, TableCell } from '@dailykit/ui'
 
 import { Wrapper } from '../styled'
 import { useTabs } from '../../../store/tabs'
@@ -12,6 +11,7 @@ import { UserContext } from '../../../store/user'
 import { CreateDomainModal } from './CreateDomainModal'
 import { EMAILS, CREATE_AWS_SES } from '../../../graphql'
 import { CaretDown, CaretUp } from '../../../assets/icons'
+import {Table, TableHead, TableBody, TableRow, TableCell} from '../../../components'
 
 export const EmailIntegrations = () => {
    const { tab, addTab } = useTabs()
