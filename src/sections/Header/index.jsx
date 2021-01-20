@@ -33,20 +33,6 @@ const Header = ({ toggleSidebar }) => {
             >
                <HomeIcon size="20" className="stroke-current text-white" />
             </button>
-            <button
-               type="button"
-               title="Go Back"
-               onClick={() => history.goBack()}
-            >
-               <LeftIcon color="#fff" size="22" />
-            </button>
-            <button
-               type="button"
-               title="Go Foreward"
-               onClick={() => history.goForward()}
-            >
-               <RightIcon color="#fff" size="22" />
-            </button>
          </StyledNav>
          <Tabs />
       </StyledHeader>

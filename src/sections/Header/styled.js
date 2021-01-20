@@ -27,6 +27,9 @@ export const StyledNav = styled.div`
       border: none;
       cursor: pointer;
       background: transparent;
+      display: flex;
+      align-items:center;
+      justify-content:center;
       :hover,
       :focus {
          background: #048e65;
