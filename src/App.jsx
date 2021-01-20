@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 // Sections

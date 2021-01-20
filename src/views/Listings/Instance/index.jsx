@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSubscription } from '@apollo/react-hooks'
+import { useSubscription } from '@apollo/client'
 
 import { UserContext } from '../../../store/user'
 import { useTabs } from '../../../store/tabs'

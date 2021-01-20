@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Grid } from '@giphy/react-components'
 import { useLocation } from 'react-router-dom'
 import { GiphyFetch } from '@giphy/js-fetch-api'
-import { useMutation, useSubscription } from '@apollo/react-hooks'
+import { useMutation, useSubscription } from '@apollo/client'
 
 import { useTabs } from '../../store/tabs'
 import { UserContext } from '../../store/user'

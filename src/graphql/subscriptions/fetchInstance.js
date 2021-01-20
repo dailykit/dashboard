@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const FETCH_INSTANCE = gql`
    subscription instances($where: aws_instance_bool_exp) {

@@ -3,7 +3,7 @@ import axios from 'axios'
 import tw from 'tailwind.macro'
 import copy from 'copy-to-clipboard'
 import styled, { css } from 'styled-components'
-import { useSubscription, useMutation } from '@apollo/react-hooks'
+import { useSubscription, useMutation } from '@apollo/client'
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@dailykit/ui'
 
 import { Wrapper } from '../styled'

@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { useSubscription, useMutation } from '@apollo/react-hooks'
+import { useSubscription, useMutation } from '@apollo/client'
 
 import { UserContext } from '../../../store/user'
 import { useTabs } from '../../../store/tabs'

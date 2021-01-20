@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const FETCH_DELIVERY_PARTNERSHIPS = gql`
    subscription deliveryPartnerships(
