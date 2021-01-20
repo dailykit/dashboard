@@ -125,6 +125,7 @@ export const EmailIntegrations = () => {
          {aws_ses.some(node => !node.isVerified) && (
             <section className="flex justify-end mb-4 w-full">
                <button
+                  type="button"
                   onClick={() => verifyDomain()}
                   className="rounded bg-yellow-500 shadow-lg text-white px-3 py-1 hover:shadow-md"
                >
