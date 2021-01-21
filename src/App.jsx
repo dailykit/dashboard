@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import {
    Home,
    Login,
+   Signup,
    Account,
    Payment,
    Instance,
@@ -40,7 +41,7 @@ const App = () => {
             <Login />
          </Route>
          <Route path="/signup" exact>
-            signup
+            <Signup />
          </Route>
          <Route>404</Route>
       </Switch>

@@ -1,7 +1,7 @@
 import React from 'react'
 import tw from 'tailwind.macro'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 import { useAuth } from '../store/auth'
 
@@ -9,9 +9,9 @@ export const Login = () => {
    const history = useHistory()
    const { authenticated, login } = useAuth()
    const [error, setError] = React.useState('')
-   const [form, setForm] = React.useState({ username: '', password: '' })
+   const [form, setForm] = React.useState({ email: '', password: '' })
 
-   const isValid = form.email && form.password
+   const isValid = form.email.trim() && form.password.trim()
 
    const onChange = e => {
       const { name, value } = e.target
@@ -66,11 +66,14 @@ export const Login = () => {
                placeholder="Enter your password"
             />
          </FieldSet>
+         <Link to="/signup" className="mb-2 self-end text-indigo-500">
+            Register instead?
+         </Link>
          <Submit
             className={!isValid ? 'disabled' : ''}
             onClick={() => isValid && submit()}
          >
-            Login
+            Submit
          </Submit>
          {error && <Error>{error}</Error>}
       </Panel>

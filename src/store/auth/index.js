@@ -1,6 +1,5 @@
 import React from 'react'
 import jwt_decode from 'jwt-decode'
-import { useHistory } from 'react-router-dom'
 import { useSubscription } from '@apollo/client'
 
 const AuthContext = React.createContext()
@@ -47,7 +46,6 @@ const reducers = (state, { type, payload }) => {
 }
 
 export const AuthProvider = ({ children }) => {
-   const history = useHistory()
    const [state, dispatch] = React.useReducer(reducers, {
       authenticated: false,
       user: {
