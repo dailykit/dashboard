@@ -1,4 +1,6 @@
 import React from 'react'
+
+import { Layout } from '../../../components'
 import { useTabs } from '../../../store/tabs'
 
 export const Account = () => {
@@ -11,8 +13,8 @@ export const Account = () => {
    }, [tab, addTab])
 
    return (
-      <div>
+      <Layout>
          <h1>Accounts</h1>
-      </div>
+      </Layout>
    )
 }

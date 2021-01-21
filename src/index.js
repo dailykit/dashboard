@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import {
    split,
@@ -17,7 +18,6 @@ import App from './App'
 
 import { AuthProvider } from './store/auth'
 import { TabProvider } from './store/tabs'
-import { UserProvider } from './store/user'
 
 import './index.css'
 import './styles.css'
@@ -68,14 +68,14 @@ const client = new ApolloClient({
 })
 
 ReactDOM.render(
-   <AuthProvider>
+   <Router>
       <ApolloProvider client={client}>
-         <UserProvider>
+         <AuthProvider>
             <TabProvider>
                <App />
             </TabProvider>
-         </UserProvider>
+         </AuthProvider>
       </ApolloProvider>
-   </AuthProvider>,
+   </Router>,
    document.getElementById('root')
 )

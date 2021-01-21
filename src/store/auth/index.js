@@ -1,53 +1,122 @@
 import React from 'react'
-import Keycloak from 'keycloak-js'
-
-const keycloak = new Keycloak({
-   realm: process.env.REACT_APP_KEYCLOAK_REALM,
-   url: process.env.REACT_APP_KEYCLOAK_URL,
-   clientId: process.env.REACT_APP_KEYCLOAK_CLIENT,
-   'ssl-required': 'none',
-   'public-client': true,
-   'bearer-only': false,
-   'verify-token-audience': true,
-   'use-resource-role-mappings': true,
-   'confidential-port': 0,
-})
+import jwt_decode from 'jwt-decode'
+import { useHistory } from 'react-router-dom'
+import { useSubscription } from '@apollo/client'
 
 const AuthContext = React.createContext()
 
-export const AuthProvider = ({ children }) => {
-   const [isAuthenticated, setIsAuthenticated] = React.useState(false)
-   const [user, setUser] = React.useState({})
-   const [isInitialized, setIsInitialized] = React.useState(false)
+import * as utils from '../../utils'
+import { USER } from '../../graphql'
+import { Loader } from '../../components'
 
-   const initialize = async () => {
-      const authenticated = await keycloak.init({
-         onLoad: 'login-required',
-         promiseType: 'native',
-      })
-      setIsInitialized(true)
-      if (authenticated) {
-         setIsAuthenticated(authenticated)
-         const profile = await keycloak.loadUserProfile()
-         setUser(profile)
+const reducers = (state, { type, payload }) => {
+   switch (type) {
+      case 'LOGOUT':
+         return {
+            ...state,
+            authenticated: false,
+            user: {
+               name: '',
+               email: '',
+               printNodePassword: '',
+               organization: {
+                  id: '',
+                  url: '',
+                  name: '',
+                  status: '',
+                  datahubUrl: '',
+                  adminSecret: '',
+                  printNodeKey: '',
+                  stripeAccountId: '',
+               },
+            },
+         }
+      case 'SET_USER':
+         return {
+            ...state,
+            user: {
+               ...state.user,
+               name: `${payload?.firstName || ''} ${payload?.lastName || ''}`,
+               ...payload,
+            },
+            authenticated: true,
+         }
+      default:
+         return state
+   }
+}
+
+export const AuthProvider = ({ children }) => {
+   const history = useHistory()
+   const [state, dispatch] = React.useReducer(reducers, {
+      authenticated: false,
+      user: {
+         name: '',
+         email: '',
+         printNodePassword: '',
+         organization: {
+            id: null,
+            url: '',
+            name: '',
+            status: '',
+            datahubUrl: '',
+            adminSecret: '',
+            printNodeKey: '',
+            stripeAccountId: '',
+         },
+      },
+   })
+
+   const {
+      loading,
+      data: { organizationAdmins: admins = [] } = {},
+   } = useSubscription(USER, {
+      skip: !state?.user?.email,
+      variables: { where: { email: { _eq: state?.user?.email } } },
+   })
+
+   React.useEffect(() => {
+      if (!loading && Array.isArray(admins) && admins.length) {
+         const [admin] = admins
+         dispatch({ type: 'SET_USER', payload: admin })
+      }
+   }, [loading, admins])
+
+   React.useEffect(() => {
+      const exists = localStorage.key('token')
+      if (exists) {
+         const profile = jwt_decode(localStorage.getItem('token'))
+         if (profile?.email) {
+            dispatch({ type: 'SET_USER', payload: { email: profile.email } })
+         }
+      }
+   }, [])
+
+   const logout = React.useCallback(() => {
+      localStorage.removeItem('token')
+      dispatch({ type: 'LOGOUT' })
+   }, [])
+
+   const login = async ({ email, password }) => {
+      try {
+         const profile = await utils.login({ email, password })
+         if (profile?.email) {
+            dispatch({ type: 'SET_USER', payload: { email: profile.email } })
+         }
+         return profile
+      } catch (error) {
+         throw error
       }
    }
 
-   React.useEffect(() => {
-      initialize()
-   }, [])
-
-   const login = () => keycloak.login()
-   const logout = () => keycloak.logout()
-
+   if (loading) return <Loader />
    return (
       <AuthContext.Provider
          value={{
-            user,
             login,
             logout,
-            isInitialized,
-            isAuthenticated,
+            dispatch,
+            ...state,
          }}
       >
          {children}

@@ -7,22 +7,23 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useMutation, useSubscription } from '@apollo/client'
 
 import { useTabs } from '../../store/tabs'
-import { UserContext } from '../../store/user'
 
 import { StyledSection, StyledIllo, StyledButton } from './styled'
 
-import { Modal } from '../../components'
+import { Modal, Layout } from '../../components'
 
 import { INITIATE_SETUP, INSTANCE_STATUS } from '../../graphql'
+import { useAuth } from '../../store/auth'
 
 const Home = () => {
    const { addTab } = useTabs()
    const location = useLocation()
-   const { state: user } = React.useContext(UserContext)
+   const { user, authenticated } = useAuth()
    const [status, setStatus] = React.useState(null)
    const { data: { organization = {} } = {} } = useSubscription(
       INSTANCE_STATUS,
       {
+         skip: !authenticated,
          variables: { id: user.organization.id },
       }
    )
@@ -37,7 +38,7 @@ const Home = () => {
       if (location.search.includes('code')) {
          const code = new URLSearchParams(location.search).get('code')
          ;(async () => {
-            if (code.length > 0 && user?.organization?.id) {
+            if (code.length > 0 && user.organization.id) {
                await axios.get(
                   `${process.env.REACT_APP_DAILYKEY_URL}/api/account-id/?code=${code}&org_id=${user?.organization?.id}`
                )
@@ -47,7 +48,7 @@ const Home = () => {
    }, [user.organization, location])
 
    return (
-      <div>
+      <Layout>
          <StyledSection>
             <div className="flex justify-between">
                <section>
@@ -162,7 +163,7 @@ const Home = () => {
                <InitiateModal setStatus={setStatus} />
             )}
          </StyledSection>
-      </div>
+      </Layout>
    )
 }
 
@@ -233,7 +234,9 @@ const InitiateModal = () => {
    )
 }
 
-const RenderGifs = ({ keyword }) => <Grid width={682} columns={3} fetchGifs={() => giphy.search(keyword)} />
+const RenderGifs = ({ keyword }) => (
+   <Grid width={682} columns={3} fetchGifs={() => giphy.search(keyword)} />
+)
 
 const StyledCredit = styled.span`
    position: fixed;
