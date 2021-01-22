@@ -72,21 +72,22 @@ export const Label = styled.label`
    font-size: 14px;
    color: #969696;
    transition: 0.3s ease-in-out;
-   transform: translateY(-px);
 `
 
 export const Field = styled.div`
-   height: 56px;
    margin-top: 8px;
    margin-bottom: 24px;
    input {
       font-size: 16px;
       color: #686d7b;
    }
+   label {
+      margin-bottom: 4px;
+   }
    input,
    select {
       width: 320px;
-      height: 56px;
+      height: 40px;
       border: none;
       border-bottom: 2px solid #e1e1e1;
       &:focus {
@@ -99,14 +100,7 @@ export const Field = styled.div`
          & + label {
             color: #04a777;
             font-size: 12px;
-            transform: translateY(-64px);
          }
       }
-   }
-   select {
-      margin-top: 16px;
-   }
-   select + label {
-      transform: translateY(-64px) !important;
    }
 `

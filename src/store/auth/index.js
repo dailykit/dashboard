@@ -1,5 +1,6 @@
 import React from 'react'
 import jwt_decode from 'jwt-decode'
+import { useLocation } from 'react-router-dom'
 import { useSubscription } from '@apollo/client'
 
 const AuthContext = React.createContext()
@@ -29,6 +30,7 @@ const reducers = (state, { type, payload }) => {
                   stripeAccountId: '',
                },
             },
+            onboard: { step: 1 },
          }
       case 'SET_USER':
          return {
@@ -40,12 +42,18 @@ const reducers = (state, { type, payload }) => {
             },
             authenticated: true,
          }
+      case 'CHANGE_STEP':
+         return {
+            ...state,
+            onboard: { step: payload },
+         }
       default:
          return state
    }
 }
 
 export const AuthProvider = ({ children }) => {
+   const location = useLocation()
    const [state, dispatch] = React.useReducer(reducers, {
       authenticated: false,
       user: {
@@ -97,6 +105,19 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token')
       dispatch({ type: 'LOGOUT' })
    }, [])
+
+   React.useEffect(() => {
+      switch (location.pathname) {
+         case '/signup/company': {
+            dispatch({ type: 'CHANGE_STEP', payload: 1 })
+            break
+         }
+         case '/signup/about-yourself': {
+            dispatch({ type: 'CHANGE_STEP', payload: 2 })
+            break
+         }
+      }
+   }, [location.pathname])
 
    const login = async ({ email, password }) => {
       try {

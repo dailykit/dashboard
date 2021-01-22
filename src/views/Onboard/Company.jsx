@@ -19,7 +19,7 @@ import { UPDATE_ORGANIZATION } from '../../graphql'
 import { useTimezones, useCurrencies } from '../../utils'
 
 export const Company = () => {
-   const { user } = useAuth()
+   const { user, dispatch } = useAuth()
    const history = useHistory()
    const [tzSearch, setTzSearch] = React.useState('')
    const { timezones } = useTimezones(tzSearch)
@@ -81,6 +81,7 @@ export const Company = () => {
                   <h2>Tell us about your company</h2>
                   <Form>
                      <Field>
+                        <Label htmlFor="company">Company Name</Label>
                         <input
                            type="text"
                            id="company"
@@ -88,105 +89,114 @@ export const Company = () => {
                            required
                            value={form.company}
                            autoComplete="off"
+                           placeholder="Enter your companie's name"
                            onChange={e => handleChange(e)}
                         />
-                        <Label htmlFor="company">Company Name</Label>
                      </Field>
-                     <Combobox
-                        aria-label="Currencies"
-                        onSelect={item =>
-                           handleChange({
-                              target: { name: 'currency', value: item },
-                           })
-                        }
-                     >
-                        <StyledComboboxInput
-                           value={form.currency}
-                           placeholder="Select Currency"
-                           onChange={e => {
-                              setCurrencySearch(e.target.value)
+                     <Field>
+                        <Label htmlFor="currency">Currency</Label>
+                        <Combobox
+                           aria-label="Currencies"
+                           onSelect={item =>
                               handleChange({
-                                 target: {
-                                    name: 'currency',
-                                    value: e.target.value,
-                                 },
-                              })
-                           }}
-                        />
-                        {currencies.length > 0 && (
-                           <StyledComboboxPopover portal={false}>
-                              {currencies.length > 0 ? (
-                                 <ComboboxList>
-                                    {currencies.map(node => {
-                                       return (
-                                          <ComboboxOption
-                                             key={node.title}
-                                             value={node.value}
-                                          />
-                                       )
-                                    })}
-                                 </ComboboxList>
-                              ) : (
-                                 <span
-                                    style={{
-                                       display: 'block',
-                                       margin: 8,
-                                    }}
-                                 >
-                                    No results found
-                                 </span>
-                              )}
-                           </StyledComboboxPopover>
-                        )}
-                     </Combobox>
-                     <Combobox
-                        aria-label="Timezones"
-                        onSelect={item =>
-                           handleChange({
-                              target: { name: 'timezone', value: item },
-                           })
-                        }
-                     >
-                        <StyledComboboxInput
-                           value={form.timeZone}
-                           placeholder="Select Timezone"
-                           onChange={e =>
-                              setTzSearch(e.target.value) ||
-                              handleChange({
-                                 target: {
-                                    name: 'timezone',
-                                    value: e.target.value,
-                                 },
+                                 target: { name: 'currency', value: item },
                               })
                            }
-                        />
-                        {timezones.length > 0 && (
-                           <StyledComboboxPopover portal={false}>
-                              {timezones.length > 0 ? (
-                                 <ComboboxList>
-                                    {timezones.map(timezone => {
-                                       return (
-                                          <ComboboxOption
-                                             key={timezone.title}
-                                             value={timezone.title}
-                                          />
-                                       )
-                                    })}
-                                 </ComboboxList>
-                              ) : (
-                                 <span
-                                    style={{
-                                       display: 'block',
-                                       margin: 8,
-                                    }}
-                                 >
-                                    No results found
-                                 </span>
-                              )}
-                           </StyledComboboxPopover>
-                        )}
-                     </Combobox>
+                        >
+                           <StyledComboboxInput
+                              value={form.currency}
+                              placeholder="Select Currency"
+                              onChange={e => {
+                                 setCurrencySearch(e.target.value)
+                                 handleChange({
+                                    target: {
+                                       name: 'currency',
+                                       value: e.target.value,
+                                    },
+                                 })
+                              }}
+                           />
+                           {currencies.length > 0 && (
+                              <StyledComboboxPopover portal={false}>
+                                 {currencies.length > 0 ? (
+                                    <ComboboxList>
+                                       {currencies.map(node => {
+                                          return (
+                                             <ComboboxOption
+                                                key={node.title}
+                                                value={node.value}
+                                                placeholder="Select a currency"
+                                             />
+                                          )
+                                       })}
+                                    </ComboboxList>
+                                 ) : (
+                                    <span
+                                       style={{
+                                          display: 'block',
+                                          margin: 8,
+                                       }}
+                                    >
+                                       No results found
+                                    </span>
+                                 )}
+                              </StyledComboboxPopover>
+                           )}
+                        </Combobox>
+                     </Field>
                      <Field>
+                        <Label htmlFor="timeZone">Time Zone</Label>
+                        <Combobox
+                           aria-label="Timezones"
+                           onSelect={item =>
+                              handleChange({
+                                 target: { name: 'timezone', value: item },
+                              })
+                           }
+                        >
+                           <StyledComboboxInput
+                              value={form.timeZone}
+                              placeholder="Select Timezone"
+                              onChange={e =>
+                                 setTzSearch(e.target.value) ||
+                                 handleChange({
+                                    target: {
+                                       name: 'timezone',
+                                       value: e.target.value,
+                                    },
+                                 })
+                              }
+                           />
+                           {timezones.length > 0 && (
+                              <StyledComboboxPopover portal={false}>
+                                 {timezones.length > 0 ? (
+                                    <ComboboxList>
+                                       {timezones.map(timezone => {
+                                          return (
+                                             <ComboboxOption
+                                                key={timezone.title}
+                                                value={timezone.title}
+                                                placeholder="Select a timezone"
+                                             />
+                                          )
+                                       })}
+                                    </ComboboxList>
+                                 ) : (
+                                    <span
+                                       style={{
+                                          display: 'block',
+                                          margin: 8,
+                                       }}
+                                    >
+                                       No results found
+                                    </span>
+                                 )}
+                              </StyledComboboxPopover>
+                           )}
+                        </Combobox>
+                     </Field>
+                     <Field>
+                        <Label htmlFor="employeesCount">No. of Employees</Label>
                         <select
                            name="employeesCount"
                            id="employeesCount"
@@ -200,7 +210,6 @@ export const Company = () => {
                            <option value="100">100-500</option>
                            <option value="500">500+</option>
                         </select>
-                        <Label htmlFor="employeesCount">No. of Employees</Label>
                      </Field>
                   </Form>
                </div>
@@ -239,10 +248,9 @@ const StyledComboboxPopover = styled(ComboboxPopover)`
 
 const StyledComboboxInput = styled(ComboboxInput)`
    width: 320px;
-   height: 56px;
+   height: 40px;
    border: none;
    color: #686d7b;
-   margin-bottom: 16px;
    border-bottom: 2px solid #e1e1e1;
    &::placeholder {
       color: #969696;

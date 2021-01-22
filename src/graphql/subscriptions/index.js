@@ -37,6 +37,8 @@ export const USER = gql`
          email
          firstName
          lastName
+         designation
+         phoneNumber
          printNodePassword
          organization {
             id

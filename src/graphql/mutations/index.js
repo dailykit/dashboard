@@ -21,3 +21,17 @@ export const UPDATE_ORGANIZATION = gql`
       }
    }
 `
+
+export const UPDATE_USER = gql`
+   mutation updateUser(
+      $id: Int!
+      $_set: organization_organizationAdmin_set_input!
+   ) {
+      updateUser: update_organization_organizationAdmin_by_pk(
+         pk_columns: { id: $id }
+         _set: $_set
+      ) {
+         id
+      }
+   }
+`

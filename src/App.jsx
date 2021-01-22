@@ -10,6 +10,7 @@ import {
    Company,
    Instance,
    DeviceHub,
+   AboutYourself,
    EmailIntegrations,
    DeliveryPartnerships,
 } from './views'
@@ -46,6 +47,9 @@ const App = () => {
          </Route>
          <Route path="/signup/company" exact>
             <Company />
+         </Route>
+         <Route path="/signup/about-yourself" exact>
+            <AboutYourself />
          </Route>
          <Route>404</Route>
       </Switch>
