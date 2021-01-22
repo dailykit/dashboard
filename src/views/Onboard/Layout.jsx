@@ -8,50 +8,17 @@ const Layout = ({ children }) => {
    const evalHeightFirst = step => {
       if (step === 1) {
          return 38
-      } else if (step === 2) {
+      } else if (step >= 2) {
          return 74
-      } else if (step > 2) {
-         return 1
       }
    }
    const evalHeightSecond = step => {
-      if (step === 4) {
-         return 22
+      if (step === 3) {
+         return 26
+      } else if (step === 4) {
+         return 52
       } else if (step === 5) {
-         return 41
-      } else if (step === 6) {
-         return 62
-      } else if (step === 7) {
-         return 83
-      }
-   }
-
-   const evalTotal = () => {
-      const { type: hostingType, plan: hostingPlan } = state.user_data.hosting
-      const {
-         required: customRequired,
-         plan: customPlan,
-      } = state.user_data.custom
-
-      let hosting = hostingType === 'cloud' ? hostingPlan : 0
-      let onboard = state.user_data.onboard ? 1000 : 0
-      let custom = customRequired
-         ? customPlan === 135
-            ? 135 * 50
-            : customPlan === 150
-            ? 150 * 10
-            : 100 * 100
-         : 0
-
-      switch (onboard.step) {
-         case 4:
-            return hosting
-         case 5:
-            return hosting + onboard
-         case 6:
-            return hosting + onboard + custom
-         default:
-            return hosting + onboard + custom
+         return 38
       }
    }
 
@@ -68,78 +35,54 @@ const Layout = ({ children }) => {
             </span>
             <h1>Basic Information</h1>
          </Header>
-         <Main step={onboard.step}>{children}</Main>
+         <Main>{children}</Main>
          <Aside>
             <Stage height1={evalHeightFirst(onboard.step)}>
                Basic Information
-               {onboard.step <= 2 && (
-                  <>
-                     <li className={isStepActive(1)}>
-                        Tell us about your company
-                     </li>
-                     <li className={isStepActive(2)}>Tell us about yourself</li>
-                  </>
-               )}
+               <>
+                  <li className={isStepActive(1)}>
+                     Tell us about your company
+                  </li>
+                  <li className={isStepActive(2)}>Tell us about yourself</li>
+               </>
             </Stage>
-            {/*
-				<Stage height2={evalHeightSecond(state.step)}>
-					Setup your Account
-					{state.step > 3 && (
-						<>
-							<li className={isStepActive(4)}>
-								<span>
-									Hosting({state.user_data.hosting.type})
-								</span>
-								<span className="price">
-									$
-									{state.user_data.hosting.type === 'cloud'
-										? state.user_data.hosting.plan
-										: 0}
-								</span>
-							</li>
-							<li className={isStepActive(5)}>
-								<span>Onboarding Support</span>
-								{state.step > 4 && (
-									<span className="price">
-										${state.user_data.onboard ? 1000 : 0}
-									</span>
-								)}
-							</li>
-							<li className={isStepActive(6)}>
-								<span>
-									Custom Support
-									{state.step > 5 &&
+            <Stage height2={evalHeightSecond(onboard.step)}>
+               Setup your Account
+               <>
+                  <li className={isStepActive(3)}>
+                     <span>Hosting ({onboard.hosting.type})</span>
+                     <span className="price">{onboard.hosting.plan}</span>
+                  </li>
+                  <li className={isStepActive(4)}>
+                     <span>Onboarding Support</span>
+                     {onboard.step > 4 && (
+                        <span className="price">
+                           {/* ${onboard.hosting.support ? 1000 : 0} */}
+                        </span>
+                     )}
+                  </li>
+                  <li className={isStepActive(5)}>
+                     <span>
+                        Custom Support
+                        {/* {state.step > 5 &&
 										(state.user_data.custom.plan === 135
 											? '(x50hrs)'
 											: state.user_data.custom.plan ===
 											  150
 											? '(x10hrs)'
-											: '(x100hrs)')}
-								</span>
-								{state.step > 5 && (
-									<span className="price">
-										$
+											: '(x100hrs)')} */}
+                     </span>
+                     {onboard.step > 5 && (
+                        <span className="price">
+                           {/* $
 										{state.user_data.custom.required
 											? state.user_data.custom.plan
-											: 0}
-									</span>
-								)}
-							</li>
-							<li className={isStepActive(7)}>
-								Billing Information
-							</li>
-						</>
-					)}
+											: 0} */}
+                        </span>
+                     )}
+                  </li>
+               </>
             </Stage>
-				{state.step > 3 && (
-               <Cart>
-						<div>
-							<span>Payable Now</span>
-							<span>${evalTotal()}</span>
-						</div>
-					</Cart>
-				)}
-             */}
          </Aside>
       </Step>
    )
@@ -186,7 +129,7 @@ export const Main = styled.main`
       position: absolute;
       top: 0;
       left: 0;
-      width: ${props => `${(100 / 2) * props.step}%`};
+      width: 100%;
       height: 4px;
       background: #04a777;
    }

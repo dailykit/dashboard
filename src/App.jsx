@@ -8,6 +8,7 @@ import {
    Account,
    Payment,
    Company,
+   Hosting,
    Instance,
    DeviceHub,
    AboutYourself,
@@ -50,6 +51,9 @@ const App = () => {
          </Route>
          <Route path="/signup/about-yourself" exact>
             <AboutYourself />
+         </Route>
+         <Route path="/signup/hosting" exact>
+            <Hosting />
          </Route>
          <Route>404</Route>
       </Switch>

@@ -30,7 +30,9 @@ const reducers = (state, { type, payload }) => {
                   stripeAccountId: '',
                },
             },
-            onboard: { step: 1 },
+            onboard: {
+               step: 1,
+            },
          }
       case 'SET_USER':
          return {
@@ -45,7 +47,7 @@ const reducers = (state, { type, payload }) => {
       case 'CHANGE_STEP':
          return {
             ...state,
-            onboard: { step: payload },
+            onboard: { ...state.onboard, step: payload },
          }
       default:
          return state
@@ -114,6 +116,10 @@ export const AuthProvider = ({ children }) => {
          }
          case '/signup/about-yourself': {
             dispatch({ type: 'CHANGE_STEP', payload: 2 })
+            break
+         }
+         case '/signup/hosting': {
+            dispatch({ type: 'CHANGE_STEP', payload: 3 })
             break
          }
       }

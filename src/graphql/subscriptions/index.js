@@ -42,6 +42,7 @@ export const USER = gql`
          printNodePassword
          organization {
             id
+            hosting
             datahubUrl
             stripeAccountId
             organizationUrl

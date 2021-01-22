@@ -16,7 +16,9 @@ export const AboutYourself = () => {
    })
 
    const [update] = useMutation(UPDATE_USER, {
-      onCompleted: () => {},
+      onCompleted: () => {
+         history.push('/signup/hosting')
+      },
       onError: error => {
          console.log(error)
       },
