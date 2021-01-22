@@ -60,7 +60,7 @@ export const Signup = () => {
             })
             if (user?.sub) {
                dispatch({ type: 'SET_USER', payload: { email: user?.email } })
-               history.push('/company')
+               history.push('/signup/company')
             }
          }
       } catch (error) {

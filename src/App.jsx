@@ -7,6 +7,7 @@ import {
    Signup,
    Account,
    Payment,
+   Company,
    Instance,
    DeviceHub,
    EmailIntegrations,
@@ -42,6 +43,9 @@ const App = () => {
          </Route>
          <Route path="/signup" exact>
             <Signup />
+         </Route>
+         <Route path="/signup/company" exact>
+            <Company />
          </Route>
          <Route>404</Route>
       </Switch>

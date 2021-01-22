@@ -63,6 +63,9 @@ export const AuthProvider = ({ children }) => {
             stripeAccountId: '',
          },
       },
+      onboard: {
+         step: 1,
+      },
    })
 
    const {

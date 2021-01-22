@@ -19,3 +19,46 @@ export const EMAILS = gql`
       }
    }
 `
+
+export const ADMIN_EXISTS = gql`
+   query admins($where: organization_organizationAdmin_bool_exp!) {
+      admins: organizationAdmins(where: $where) {
+         id
+      }
+   }
+`
+
+export const USER = gql`
+   subscription organizationAdmins(
+      $where: organization_organizationAdmin_bool_exp
+   ) {
+      organizationAdmins(where: $where) {
+         id
+         email
+         firstName
+         lastName
+         printNodePassword
+         organization {
+            id
+            datahubUrl
+            stripeAccountId
+            organizationUrl
+            organizationName
+            instanceStatus
+            printNodeKey
+            adminSecret
+            timeZone
+            currency
+         }
+      }
+   }
+`
+
+export const TIMEZONES = gql`
+   query timezones($title: String!) {
+      timezones: master_timezone(where: { title: { _ilike: $title } }) {
+         title
+         value
+      }
+   }
+`

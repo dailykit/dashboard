@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useMutation, useSubscription } from '@apollo/client'
 
+import { useAuth } from '../../store/auth'
 import { useTabs } from '../../store/tabs'
 
 import { StyledSection, StyledIllo, StyledButton } from './styled'
@@ -13,7 +14,6 @@ import { StyledSection, StyledIllo, StyledButton } from './styled'
 import { Modal, Layout } from '../../components'
 
 import { INITIATE_SETUP, INSTANCE_STATUS } from '../../graphql'
-import { useAuth } from '../../store/auth'
 
 const Home = () => {
    const { addTab } = useTabs()
@@ -173,8 +173,8 @@ const giphy = new GiphyFetch(process.env.REACT_APP_GIPHY_KEY)
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const InitiateModal = () => {
+   const { user } = useAuth()
    const [keyword, setKeyword] = React.useState('button')
-   const { state: user } = React.useContext(UserContext)
    const [initiateSetup] = useMutation(INITIATE_SETUP, {
       onCompleted: async ({ updateOrganization = {} }) => {
          const { instanceRequested } = updateOrganization
