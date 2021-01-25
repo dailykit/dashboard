@@ -11,7 +11,7 @@ import {
    ComboboxOption,
 } from '@reach/combobox'
 
-import { Footer, Main, Wrapper, Field, Label, Form } from './styled'
+import { Footer, Main, Wrapper, Field, Label, Form, Button } from './styled'
 
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
@@ -215,7 +215,7 @@ export const Company = () => {
                </div>
             </Main>
             <Footer>
-               <button onClick={save}>Next</button>
+               <Button onClick={save}>Next</Button>
             </Footer>
          </Wrapper>
       </Layout>

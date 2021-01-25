@@ -1,41 +1,30 @@
+import tw from 'tailwind.macro'
 import styled, { css } from 'styled-components'
 
-export const Footer = styled.footer`
-   display: flex;
-   height: 103px;
-   justify-content: space-between;
-   align-items: center;
-   button {
-      height: 40px;
-      line-height: 42px;
-      text-transform: uppercase;
-      background: #04a777;
-      border-radius: 48px;
-      padding: 0 16px;
-      border: none;
-      font-size: 14px;
-      color: #fff;
-      cursor: pointer;
-      font-weight: 500;
+export const Button = styled.button`
+   ${tw`bg-green-600 uppercase font-medium text-sm text-white border-none px-4 h-10 rounded-full`}
+   &:disabled {
+      ${tw`cursor-not-allowed bg-gray-300 text-gray-500`}
    }
 `
 
+export const Footer = styled.footer`
+   height: 103px;
+   ${tw`flex items-center justify-between`}
+`
+
 export const Main = styled.main`
-   background: #fff;
    height: calc(100% - 103px);
    border: 1px solid #ececec;
-   padding-top: 80px;
+   ${tw`pt-20 bg-white`};
    > div {
-      margin: 0 auto;
       width: 320px;
+      ${tw`mx-auto`}
    }
 `
 
 export const Wrapper = styled.div`
-   width: 100%;
-   height: 100%;
-   display: flex;
-   flex-direction: column;
+   ${tw`flex flex-col h-full w-full`}
    h2 {
       font-size: 20px;
       font-weight: 400;
@@ -53,9 +42,8 @@ export const Wrapper = styled.div`
 export const Form = styled.form`
    width: 320px;
    #terms__label {
-      font-size: 14px;
       color: #555b6e;
-      margin-left: 8px;
+      ${tw`ml-2 text-sm`}
       a {
          text-decoration: none;
          color: #555b6e;
@@ -68,8 +56,7 @@ export const Form = styled.form`
 `
 
 export const Field = styled.div`
-   margin-top: 8px;
-   margin-bottom: 24px;
+   ${tw`mb-6 mt-2`}
    input {
       font-size: 16px;
       color: #686d7b;

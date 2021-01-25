@@ -2,13 +2,14 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
+   Tip,
+   Info,
+   Card,
    Footer,
+   Button,
    Wrapper,
    ExtMain,
    CheckBoxWrapper,
-   Info,
-   Tip,
-   Card,
 } from './styled'
 import Layout from './Layout'
 import { BulbEmoji } from '../../assets/icons'
@@ -65,15 +66,15 @@ export const Support = () => {
                </div>
             </ExtMain>
             <Footer>
-               <button onClick={() => prevPage()}>Back</button>
-               <button
+               <Button onClick={() => prevPage()}>Back</Button>
+               <Button
                   onClick={() => nextPage()}
                   style={{
                      background: '#04a777',
                   }}
                >
                   Next
-               </button>
+               </Button>
             </Footer>
          </Wrapper>
       </Layout>

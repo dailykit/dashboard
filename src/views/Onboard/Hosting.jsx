@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
-import { Footer, Main, Wrapper, RadioWrapper, Label } from './styled'
+import { Footer, Main, Wrapper, RadioWrapper, Label, Button } from './styled'
 
 export const Hosting = () => {
    const history = useHistory()
@@ -60,15 +60,15 @@ export const Hosting = () => {
                </div>
             </Main>
             <Footer>
-               <button onClick={() => prevPage()}>Back</button>
-               <button
+               <Button onClick={() => prevPage()}>Back</Button>
+               <Button
                   onClick={() => nextPage()}
                   style={{
                      background: '#04a777',
                   }}
                >
                   Next
-               </button>
+               </Button>
             </Footer>
          </Wrapper>
       </Layout>

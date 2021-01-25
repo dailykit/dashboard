@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
 import { UPDATE_USER } from '../../graphql'
-import { Footer, Main, Wrapper, Field, Label, Form } from './styled'
+import { Footer, Main, Wrapper, Field, Label, Form, Button } from './styled'
 
 export const AboutYourself = () => {
    const { user } = useAuth()
@@ -91,10 +91,10 @@ export const AboutYourself = () => {
                </div>
             </Main>
             <Footer>
-               <button onClick={() => history.push('/signup/company')}>
+               <Button onClick={() => history.push('/signup/company')}>
                   Back
-               </button>
-               <button onClick={submit}>Next</button>
+               </Button>
+               <Button onClick={submit}>Next</Button>
             </Footer>
          </Wrapper>
       </Layout>
