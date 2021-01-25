@@ -37,8 +37,8 @@ export const Company = () => {
    const [form, setForm] = React.useState({
       company: '',
       currency: '',
+      timezone: '',
       employeesCount: '',
-      timezone: moment.tz.guess(),
    })
 
    const handleChange = e => {
@@ -55,7 +55,7 @@ export const Company = () => {
             ...form,
             currency: user.organization?.currency || '',
             company: user.organization?.organizationName || '',
-            timeZone: user.organization?.timeZone || moment.tz.guess(),
+            timezone: user.organization?.timeZone || moment.tz.guess(),
          }))
       }
    }, [user.organization])
@@ -145,7 +145,7 @@ export const Company = () => {
                         </Combobox>
                      </Field>
                      <Field>
-                        <Label htmlFor="timeZone">Time Zone</Label>
+                        <Label htmlFor="timezone">Time Zone</Label>
                         <Combobox
                            aria-label="Timezones"
                            onSelect={item =>
@@ -155,7 +155,7 @@ export const Company = () => {
                            }
                         >
                            <StyledComboboxInput
-                              value={form.timeZone}
+                              value={form.timezone}
                               placeholder="Select Timezone"
                               onChange={e =>
                                  setTzSearch(e.target.value) ||
