@@ -12,6 +12,7 @@ import {
    Support,
    Instance,
    DeviceHub,
+   Installation,
    AboutYourself,
    EmailIntegrations,
    DeliveryPartnerships,
@@ -58,6 +59,9 @@ const App = () => {
          </Route>
          <Route path="/signup/support" exact>
             <Support />
+         </Route>
+         <Route path="/signup/installation" exact>
+            <Installation />
          </Route>
          <Route>404</Route>
       </Switch>
