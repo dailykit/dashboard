@@ -37,7 +37,7 @@ export const EmailIntegrations = () => {
       skip: !authenicated,
       variables: {
          organizationId: {
-            _eq: state.organization.id,
+            _eq: user.organization.id,
          },
       },
    })

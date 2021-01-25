@@ -10,10 +10,10 @@ import { Loader, Layout } from '../../../components'
 import { useAuth } from '../../../store/auth'
 
 export const Payment = () => {
+   const { user } = useAuth()
    const { tab, addTab } = useTabs()
    const [account, setAccount] = React.useState({})
    const [loginUrl, setLoginUrl] = React.useState('')
-   const { user } = useAuth()
    const [isAccountLoading, setIsAccountLoading] = React.useState(true)
 
    React.useEffect(() => {
@@ -32,6 +32,8 @@ export const Payment = () => {
                setIsAccountLoading(false)
             }
          })()
+      } else {
+         setIsAccountLoading(false)
       }
    }, [user.organization])
 

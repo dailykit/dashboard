@@ -22,7 +22,7 @@ const Sidebar = ({ visible, toggleSidebar }) => {
             <StyledListItem onClick={() => addTab('Account', '/account')}>
                Account
             </StyledListItem>
-            <StyledListItem onClick={() => addTab('Instance', '/dailyos')}>
+            <StyledListItem onClick={() => addTab('Instance', '/instance')}>
                DailyOS
             </StyledListItem>
             <StyledListItem

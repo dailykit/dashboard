@@ -44,10 +44,13 @@ export const DeliveryPartnerships = () => {
    const [selected, setSelected] = React.useState({})
    const [status, setStatus] = React.useState('LOADING')
    const [credStatus, setCredStatus] = React.useState({})
-   const [partnerships, setPartnerships] = React.useState([])
    const [isModalVisible, setIsModalVisible] = React.useState(false)
    const [updateDeliverPartnership] = useMutation(UPDATE_DELIVERY_PARTNERSHIPS)
-   const { loading } = useSubscription(FETCH_DELIVERY_PARTNERSHIPS, {
+   const {
+      error,
+      loading,
+      data: { deliveryPartnerships: partnerships = [] } = {},
+   } = useSubscription(FETCH_DELIVERY_PARTNERSHIPS, {
       skip: !authenicated,
       variables: {
          where: {
@@ -56,14 +59,23 @@ export const DeliveryPartnerships = () => {
             },
          },
       },
-      onSubscriptionData: ({ subscriptionData: { data = {} } = {} }) => {
-         const { deliveryPartnerships = [] } = data
-         if (deliveryPartnerships.length > 0) {
-            setStatus('SUCCESS')
-            setPartnerships(deliveryPartnerships)
-         }
-      },
    })
+
+   React.useEffect(() => {
+      if (!loading && Array.isArray(partnerships) && partnerships.length > 0) {
+         const [partnership] = partnerships
+         setStatus('SUCCESS')
+         setInstance(partnership)
+      } else if (
+         !loading &&
+         Array.isArray(partnerships) &&
+         partnerships.length === 0
+      ) {
+         setStatus('EMPTY')
+      } else if (!loading && error) {
+         setStatus('ERROR')
+      }
+   }, [loading, partnerships, error])
 
    React.useEffect(() => {
       if (!tab) {
@@ -109,12 +121,24 @@ export const DeliveryPartnerships = () => {
       }
    }
 
-   if (loading)
+   if (status === 'LOADING')
       return (
          <Layout>
             <Wrapper>
                <Loader />
             </Wrapper>
+         </Layout>
+      )
+   if (status === 'ERROR')
+      return (
+         <Layout>
+            <Wrapper>Something went wrong!</Wrapper>
+         </Layout>
+      )
+   if (status === 'EMPTY')
+      return (
+         <Layout>
+            <Wrapper>No partnerships linked!</Wrapper>
          </Layout>
       )
    return (
