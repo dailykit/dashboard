@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 import { useAuth } from '../../store/auth'
 
 const Layout = ({ children }) => {
-   const { onboard } = useAuth()
+   const { user, onboard } = useAuth()
    const evalHeightFirst = step => {
       if (step === 1) {
          return 38
@@ -50,8 +50,12 @@ const Layout = ({ children }) => {
                Setup your Account
                <>
                   <li className={isStepActive(3)}>
-                     <span>Hosting ({onboard.hosting.type})</span>
-                     <span className="price">{onboard.hosting.plan}</span>
+                     <span>Hosting ({user.organization?.hosting?.type})</span>
+                     <span className="price">
+                        {user.organization?.hosting?.cost === 0
+                           ? 'Free'
+                           : user.organization?.hosting?.cost}
+                     </span>
                   </li>
                   <li className={isStepActive(4)}>
                      <span>Onboarding Support</span>

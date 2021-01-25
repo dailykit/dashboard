@@ -122,6 +122,10 @@ export const AuthProvider = ({ children }) => {
             dispatch({ type: 'CHANGE_STEP', payload: 3 })
             break
          }
+         case '/signup/support': {
+            dispatch({ type: 'CHANGE_STEP', payload: 4 })
+            break
+         }
       }
    }, [location.pathname])
 

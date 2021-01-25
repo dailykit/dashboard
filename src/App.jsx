@@ -9,6 +9,7 @@ import {
    Payment,
    Company,
    Hosting,
+   Support,
    Instance,
    DeviceHub,
    AboutYourself,
@@ -25,7 +26,7 @@ const App = () => {
          <Route path="/account" exact>
             <Account />
          </Route>
-         <Route path="/dailyos" exact>
+         <Route path="/instance" exact>
             <Instance />
          </Route>
          <Route path="/partnerships/delivery" exact>
@@ -54,6 +55,9 @@ const App = () => {
          </Route>
          <Route path="/signup/hosting" exact>
             <Hosting />
+         </Route>
+         <Route path="/signup/support" exact>
+            <Support />
          </Route>
          <Route>404</Route>
       </Switch>
