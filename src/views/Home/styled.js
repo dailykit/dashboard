@@ -13,19 +13,3 @@ export const StyledSection = styled.section(
       }
    `
 )
-
-export const StyledIllo = styled.div(
-   () => css`
-      height: 480px;
-      overflow-y: auto;
-      position: relative;
-      ${tw`bg-gray-100 rounded`}
-   `
-)
-
-export const StyledButton = styled.button(
-   () => css`
-      background: #04a777;
-      ${tw`mt-3 px-6 h-10 rounded-full text-sm uppercase font-medium text-white`}
-   `
-)

@@ -12,6 +12,7 @@ import {
    Support,
    Instance,
    DeviceHub,
+   Checklist,
    Installation,
    AboutYourself,
    EmailIntegrations,
@@ -62,6 +63,9 @@ const App = () => {
          </Route>
          <Route path="/signup/installation" exact>
             <Installation />
+         </Route>
+         <Route path="/checklist" exact>
+            <Checklist />
          </Route>
          <Route>404</Route>
       </Switch>

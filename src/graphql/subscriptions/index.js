@@ -43,15 +43,16 @@ export const USER = gql`
          organization {
             id
             hosting
+            timeZone
+            currency
             datahubUrl
+            adminSecret
+            printNodeKey
+            instanceStatus
             stripeAccountId
             organizationUrl
             organizationName
-            instanceStatus
-            printNodeKey
-            adminSecret
-            timeZone
-            currency
+            instanceRequested
          }
       }
    }

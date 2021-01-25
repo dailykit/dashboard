@@ -1,16 +1,11 @@
 import React from 'react'
 import axios from 'axios'
-import styled from 'styled-components'
-import { Grid } from '@giphy/react-components'
 import { useLocation } from 'react-router-dom'
-import { GiphyFetch } from '@giphy/js-fetch-api'
-import { useMutation, useSubscription } from '@apollo/client'
 
 import { useAuth } from '../../store/auth'
 import { useTabs } from '../../store/tabs'
 import { Layout } from '../../components'
-import { INITIATE_SETUP, INSTANCE_STATUS } from '../../graphql'
-import { StyledSection, StyledIllo, StyledButton } from './styled'
+import { StyledSection } from './styled'
 
 const Home = () => {
    const { user } = useAuth()
