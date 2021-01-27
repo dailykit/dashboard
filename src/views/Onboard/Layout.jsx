@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
       } else if (step === 4) {
          return 52
       } else if (step === 5) {
-         return 38
+         return 78
       }
    }
 
@@ -29,12 +29,6 @@ const Layout = ({ children }) => {
 
    return (
       <Step>
-         <Header>
-            <span>
-               <img src="/logo.png" alt="DailyKit" />
-            </span>
-            <h1>Basic Information</h1>
-         </Header>
          <Main>{children}</Main>
          <Aside>
             <Stage height1={evalHeightFirst(onboard.step)}>
@@ -66,24 +60,7 @@ const Layout = ({ children }) => {
                      )}
                   </li>
                   <li className={isStepActive(5)}>
-                     <span>
-                        Custom Support
-                        {/* {state.step > 5 &&
-										(state.user_data.custom.plan === 135
-											? '(x50hrs)'
-											: state.user_data.custom.plan ===
-											  150
-											? '(x10hrs)'
-											: '(x100hrs)')} */}
-                     </span>
-                     {onboard.step > 5 && (
-                        <span className="price">
-                           {/* $
-										{state.user_data.custom.required
-											? state.user_data.custom.plan
-											: 0} */}
-                        </span>
-                     )}
+                     <span>Installation</span>
                   </li>
                </>
             </Stage>
@@ -97,13 +74,13 @@ export default Layout
 export const Step = styled.div`
    background: #fafafa;
    height: 100vh;
-   padding: 0 96px;
+   padding: 48px 48px 0 48px;
    display: grid;
-   grid-template-rows: 96px 1fr;
-   grid-template-columns: 2fr 1fr 1fr;
+   grid-template-rows: 1fr;
+   grid-template-columns: 1fr 320px;
    grid-template-areas:
-      'head head head'
-      'main main aside';
+      'main aside'
+      'footer aside';
 `
 
 export const Header = styled.header`

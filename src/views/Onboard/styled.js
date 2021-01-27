@@ -10,6 +10,7 @@ export const Button = styled.button`
 
 export const Footer = styled.footer`
    height: 103px;
+   grid-area: footer;
    ${tw`flex items-center justify-between`}
 `
 
