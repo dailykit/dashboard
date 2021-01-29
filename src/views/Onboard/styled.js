@@ -15,6 +15,7 @@ export const Footer = styled.footer`
 `
 
 export const Main = styled.main`
+   overflow-y: auto;
    height: calc(100% - 103px);
    border: 1px solid #ececec;
    ${tw`pt-20 bg-white`};

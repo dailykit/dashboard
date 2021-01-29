@@ -52,7 +52,10 @@ export const Hosting = () => {
                                  checked={true}
                                  onChange={() => {}}
                               />
-                              <span htmlFor="free">Free</span>
+                              <span htmlFor="free">
+                                 <strike>$100</strike>
+                                 &nbsp;Free
+                              </span>
                            </Label>
                         </RadioWrapper>
                      </>

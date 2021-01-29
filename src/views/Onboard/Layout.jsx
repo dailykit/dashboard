@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
+import Header from './Header'
 import { useAuth } from '../../store/auth'
 
 const Layout = ({ children }) => {
@@ -14,11 +15,13 @@ const Layout = ({ children }) => {
    }
    const evalHeightSecond = step => {
       if (step === 3) {
-         return 26
+         return 21
       } else if (step === 4) {
-         return 52
+         return 42
       } else if (step === 5) {
-         return 78
+         return 63
+      } else if (step === 6) {
+         return 83
       }
    }
 
@@ -28,204 +31,159 @@ const Layout = ({ children }) => {
    }
 
    return (
-      <Step>
-         <Main>{children}</Main>
-         <Aside>
-            <Stage height1={evalHeightFirst(onboard.step)}>
+      <Styles.Wrapper>
+         <Header />
+         <Styles.Main>{children}</Styles.Main>
+         <Styles.Aside>
+            <Styles.Stage height1={evalHeightFirst(onboard.step)}>
                Basic Information
                <>
-                  <li className={isStepActive(1)}>
+                  <Styles.Step className={isStepActive(1)}>
                      Tell us about your company
-                  </li>
-                  <li className={isStepActive(2)}>Tell us about yourself</li>
+                  </Styles.Step>
+                  <Styles.Step className={isStepActive(2)}>
+                     Tell us about yourself
+                  </Styles.Step>
                </>
-            </Stage>
-            <Stage height2={evalHeightSecond(onboard.step)}>
+            </Styles.Stage>
+            <Styles.Stage height2={evalHeightSecond(onboard.step)}>
                Setup your Account
                <>
-                  <li className={isStepActive(3)}>
+                  <Styles.Step className={isStepActive(3)}>
                      <span>Hosting ({user.organization?.hosting?.type})</span>
                      <span className="price">
                         {user.organization?.hosting?.cost === 0
                            ? 'Free'
                            : user.organization?.hosting?.cost}
                      </span>
-                  </li>
-                  <li className={isStepActive(4)}>
+                  </Styles.Step>
+                  <Styles.Step className={isStepActive(4)}>
                      <span>Onboarding Support</span>
-                     {onboard.step > 4 && (
-                        <span className="price">
-                           {/* ${onboard.hosting.support ? 1000 : 0} */}
-                        </span>
-                     )}
-                  </li>
-                  <li className={isStepActive(5)}>
+                  </Styles.Step>
+                  <Styles.Step className={isStepActive(5)}>
                      <span>Installation</span>
-                  </li>
+                  </Styles.Step>
+                  <Styles.Step className={isStepActive(6)}>
+                     <span>Finish Setup</span>
+                  </Styles.Step>
                </>
-            </Stage>
-         </Aside>
-      </Step>
+            </Styles.Stage>
+         </Styles.Aside>
+      </Styles.Wrapper>
    )
 }
 
 export default Layout
 
-export const Step = styled.div`
-   background: #fafafa;
-   height: 100vh;
-   padding: 48px 48px 0 48px;
-   display: grid;
-   grid-template-rows: 1fr;
-   grid-template-columns: 1fr 320px;
-   grid-template-areas:
-      'main aside'
-      'footer aside';
-`
-
-export const Header = styled.header`
-   grid-area: head;
-   display: flex;
-   align-items: center;
-   span {
+const Styles = {
+   Wrapper: styled.div`
+      background: #fafafa;
+      height: 100vh;
+      display: grid;
+      grid-gap: 16px 0;
+      grid-template-rows: 40px 1fr;
+      grid-template-columns: 1fr 320px;
+      grid-template-areas:
+         'head head'
+         'main aside';
+   `,
+   Main: styled.main`
+      grid-area: main;
+      padding: 0 16px;
+   `,
+   Aside: styled.aside`
+      grid-area: aside;
       display: flex;
-      display: block;
-      margin-right: 16px;
-      padding-right: 16px;
+      flex-direction: column;
+      padding-top: 16px;
+   `,
+   Stage: styled.ul(
+      ({ height1, height2 }) => css`
+         font-size: 24px;
+         line-height: 16px;
+         color: #555b6e;
+         margin-bottom: 48px;
+         padding: 0 16px 0 24px;
+         position: relative;
+         &::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 4px;
+            width: 2px;
+            z-index: 100;
+            background: #04a777;
+         }
+         &::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fafafa;
+         }
+         &:first-child {
+            &::before {
+               height: ${height1}%;
+            }
+            &::after {
+               border: ${height1 > 0
+                  ? `2px solid #04A777`
+                  : `2px solid #C3C6CE`};
+            }
+         }
+         &:nth-child(2) {
+            &::before {
+               height: ${height2}%;
+            }
+            &::after {
+               border: ${height2 > 0
+                  ? `2px solid #04A777`
+                  : `2px solid #C3C6CE`};
+            }
+         }
+      `
+   ),
+   Step: styled.li`
+      font-size: 14px;
+      height: 48px;
+      display: flex;
       align-items: center;
-      border-right: 1px solid rgba(0, 0, 0, 0.3);
-   }
-   h1 {
-      font-size: 24px;
-      font-weight: 400;
-      color: #555b6e;
-   }
-`
-
-export const Main = styled.main`
-   grid-area: main;
-   position: relative;
-   ::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: #04a777;
-   }
-`
-export const Aside = styled.aside`
-   grid-area: aside;
-   display: flex;
-   flex-direction: column;
-   height: calc(100vh - 200px);
-   padding: 32px 0 0 80px;
-`
-
-export const Stage = styled.ul(
-   ({ height1, height2 }) => css`
-      font-size: 24px;
-      line-height: 16px;
-      color: #555b6e;
-      margin-bottom: 48px;
-      position: relative;
-      &::before {
-         content: '';
-         position: absolute;
-         top: 16px;
-         left: -32px;
-         width: 2px;
-         z-index: 100;
-         background: #04a777;
+      justify-content: space-between;
+      list-style: none;
+      &:first-child {
+         margin-top: 24px;
       }
+      position: relative;
       &::after {
          content: '';
          position: absolute;
-         top: -2px;
-         left: -40px;
-         width: 18px;
-         height: 18px;
+         top: calc(100% - 26px);
+         left: -23px;
+         width: 8px;
+         height: 8px;
          border-radius: 50%;
-         background: #fafafa;
+         background: #e1e1e1;
+         z-index: 10;
       }
-      &:first-child {
-         &::before {
-            height: ${height1}%;
-         }
-         &::after {
-            border: ${height1 > 0 ? `2px solid #04A777` : `2px solid #C3C6CE`};
-         }
-      }
-      &:nth-child(2) {
-         &::before {
-            height: ${height2}%;
-         }
-         &::after {
-            border: ${height2 > 0 ? `2px solid #04A777` : `2px solid #C3C6CE`};
-         }
-      }
-      li {
-         font-size: 14px;
+      &::before {
+         content: '';
+         position: absolute;
+         top: -24px;
+         left: -20px;
+         width: 2px;
          height: 48px;
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
-         list-style: none;
-         &:first-child {
-            margin-top: 24px;
-         }
-         position: relative;
+         background: #e1e1e1;
+      }
+      &.active {
          &::after {
-            content: '';
-            position: absolute;
-            top: calc(100% - 26px);
-            left: -35px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #e1e1e1;
-            z-index: 10;
-         }
-         &::before {
-            content: '';
-            position: absolute;
-            top: -24px;
-            left: -32px;
-            width: 2px;
-            height: 48px;
-            background: #e1e1e1;
-         }
-         &.active {
-            &::after {
-               background: #04a777;
-            }
-         }
-         span.price {
-            font-weight: 500;
+            background: #04a777;
          }
       }
-   `
-)
-
-export const Cart = styled.div`
-   width: 100%;
-   color: #fff;
-   height: auto;
-   font-weight: 300;
-   padding: 16px;
-   padding-bottom: 0;
-   background: #555b6e;
-   border-radius: 4px;
-   div {
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      span {
-         font-size: 14px;
-         :last-child {
-            font-weight: 400;
-         }
+      span.price {
+         font-weight: 500;
       }
-   }
-`
+   `,
+}
