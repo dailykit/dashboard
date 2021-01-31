@@ -35,3 +35,15 @@ export const UPDATE_USER = gql`
       }
    }
 `
+
+export const INSERT_COMPANY_MENU_IMPORT = gql`
+   mutation insert_marketPlaceHub_organizationMenu_marketPlaceCompany_one(
+      $object: marketPlaceHub_organizationMenu_marketPlaceCompany_insert_input!
+   ) {
+      insert_marketPlaceHub_organizationMenu_marketPlaceCompany_one(
+         object: $object
+      ) {
+         id
+      }
+   }
+`

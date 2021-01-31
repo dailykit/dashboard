@@ -1,11 +1,18 @@
 import React from 'react'
 import tw from 'tailwind.macro'
 import styled from 'styled-components'
+import { useMutation, useQuery } from '@apollo/client'
 import { Gif } from '@giphy/react-components'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 
-import { useAuth } from '../../store/auth'
 import Layout from './Layout'
+import { Radio } from '../../components'
+import { Label, Button } from './styled'
+import { useAuth } from '../../store/auth'
+import {
+   MARKETPLACE_COMPANIES,
+   INSERT_COMPANY_MENU_IMPORT,
+} from '../../graphql'
 
 const gif_ids = {
    launch: [
@@ -65,13 +72,123 @@ const gif_ids = {
 }
 
 export const FinishSetup = () => {
+   const { user } = useAuth()
+   const [url, setUrl] = React.useState('')
+   const [error, setError] = React.useState('')
+   const [title, setTitle] = React.useState('')
+   const [option, setOption] = React.useState('source')
+   const [create, { loading }] = useMutation(INSERT_COMPANY_MENU_IMPORT, {
+      onError: () => {
+         setError('Something went wrong, please try again!')
+      },
+   })
+   const { data: { companies = [] } = {} } = useQuery(MARKETPLACE_COMPANIES, {
+      onCompleted: ({ companies = [] }) => {
+         if (companies.length > 0) {
+            const [company] = companies
+            setTitle(company.title)
+         }
+      },
+   })
+
+   const onSubmit = () => {
+      setError('')
+      if (!url.trim()) return setError('Menu URL is required.')
+      if (
+         !new RegExp(
+            /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+         ).test(url)
+      )
+         return setError('Menu URL must be valid!')
+      if (!title.trim()) return setError('Company is required.')
+      if (url.trim() && title) {
+         create({
+            variables: {
+               object: {
+                  exportUrl: url,
+                  marketPlaceCompanyTitle: title,
+                  organizationId: user?.organization?.id,
+               },
+            },
+         })
+      }
+   }
+
    return (
       <Layout>
          <Main>
             <Top>
                <GifCycle />
             </Top>
-            <section>right</section>
+            <section className="p-3">
+               <h2 className="text-xl text-gray-700 mb-3">Import Data</h2>
+               <section>
+                  <Radio>
+                     <Radio.Option
+                        id="source"
+                        name="import"
+                        value={option}
+                        onClick={() => setOption('source')}
+                     >
+                        Website
+                     </Radio.Option>
+                     <Radio.Option
+                        id="demo"
+                        name="import"
+                        value={option}
+                        onClick={() => setOption('demo')}
+                     >
+                        Demo
+                     </Radio.Option>
+                  </Radio>
+               </section>
+               {option === 'source' && (
+                  <section className="mt-3 space-y-3">
+                     <fieldset className="flex flex-col">
+                        <Label htmlFor="marketPlaceCompany">
+                           Select Company
+                        </Label>
+                        <select
+                           value={title}
+                           id="marketPlaceCompany"
+                           name="marketPlaceCompany"
+                           onChange={e => setTitle(e.target.value)}
+                           className="h-10 border rounded pl-2 w-64"
+                        >
+                           {companies.map(company => (
+                              <option key={company.title} value={company.title}>
+                                 {company.title}
+                              </option>
+                           ))}
+                        </select>
+                     </fieldset>
+                     <fieldset className=" flex flex-col">
+                        <Label htmlFor="menuUrl">Menu URL</Label>
+                        <input
+                           id="menuUrl"
+                           value={url}
+                           name="menuUrl"
+                           placeholder="Enter menu url"
+                           onChange={e => setUrl(e.target.value)}
+                           className="h-10 border rounded pl-2 w-full"
+                        />
+                     </fieldset>
+                     <Button
+                        type="button"
+                        onClick={onSubmit}
+                        disabled={!url || loading}
+                     >
+                        {loading ? 'Saving' : 'Save'}
+                     </Button>
+                     {error && (
+                        <span className="self-start block text-red-500 mt-2">
+                           {error}
+                        </span>
+                     )}
+                  </section>
+               )}
+               {option === 'demo' && <section className="mt-3">demo</section>}
+            </section>
          </Main>
       </Layout>
    )
@@ -115,16 +232,9 @@ const GifCycle = () => {
          setGifs(congratsGifs)
       })()
    }, [])
-
-   if (user.organization?.instanceStatus === 'SETUP_COMPLETED')
-      return (
-         <div className="h-full text-center">
-            <h1>You're DailyOS is ready to use.</h1>
-         </div>
-      )
    return (
       <>
-         {user.organization?.instanceStatus !== 'SETUP_COMPLETED' ? (
+         {user.organization?.instanceStatus === 'SETUP_COMPLETED' ? (
             <header className="text-left p-3 absolute z-10 inset-0 h-full">
                <h1 className="mb-3 text-2xl font-medium text-white ">
                   You're DailyOS is ready to use.

@@ -66,3 +66,11 @@ export const TIMEZONES = gql`
       }
    }
 `
+
+export const MARKETPLACE_COMPANIES = gql`
+   query companies {
+      companies: marketPlaceHub_marketPlaceCompany {
+         title
+      }
+   }
+`

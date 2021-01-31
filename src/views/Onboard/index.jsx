@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useLazyQuery } from '@apollo/client'
 import { useHistory, Link } from 'react-router-dom'
 
+import { Label } from './styled'
 import * as utils from '../../utils'
 import { useAuth } from '../../store/auth'
 import { ADMIN_EXISTS } from '../../graphql'
@@ -140,10 +141,6 @@ const Panel = styled.section`
 
 const FieldSet = styled.fieldset`
    ${tw`w-full flex flex-col mb-4`}
-`
-
-const Label = styled.label`
-   ${tw`text-gray-600 mb-1`}
 `
 
 const Input = styled.input`
