@@ -87,46 +87,9 @@ export const Field = styled.div`
    }
 `
 
-export const RadioWrapper = styled.div(
-   ({ variant }) => css`
-      display: flex;
-      padding-left: 4px;
-      margin-bottom: 48px;
-      background: #fafafa;
-      align-items: center;
-      border: 1px solid #ececec;
-      height: ${variant === 'rectangle' ? `64px` : `48px`};
-      width: ${variant === 'rectangle' ? `150px` : `294px`};
-      border-radius: ${variant === 'rectangle' ? `8px` : `48px`};
-   `
-)
-
-export const Label = styled.label(
-   ({ variant }) => css`
-      &:first-child {
-         margin-right: 4px;
-      }
-      span {
-         width: 140px;
-         display: block;
-         color: #888d9d;
-         cursor: pointer;
-         text-align: center;
-         transition: 0.3s ease-in-out;
-         height: ${variant === 'rectangle' ? '56px' : '40px'};
-         line-height: ${variant === 'rectangle' ? '56px' : '40px'};
-         border-radius: ${variant === 'rectangle' ? '8px' : '40px'};
-      }
-      input {
-         position: absolute;
-         visibility: hidden;
-      }
-      input:checked ~ span {
-         background: #00a7e1;
-         color: #fff;
-      }
-   `
-)
+export const Label = styled.label`
+   ${tw`text-gray-600 mb-1`}
+`
 
 export const ExtMain = styled(Main)`
    > div {
