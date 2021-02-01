@@ -46,6 +46,7 @@ export const USER = gql`
             datahubUrl
             adminSecret
             printNodeKey
+            onboardStatus
             instanceStatus
             stripeAccountId
             instanceRequested

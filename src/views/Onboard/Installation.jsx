@@ -14,7 +14,7 @@ export const Installation = () => {
    const history = useHistory()
    const [name, setName] = React.useState('')
    const [update, { loading }] = useMutation(UPDATE_ORGANIZATION, {
-      onCompleted: () => history.push('/checklist'),
+      onCompleted: () => history.push('/signup/finish-setup'),
    })
 
    const submit = () => {
@@ -23,6 +23,7 @@ export const Installation = () => {
             id: user.organization?.id,
             _set: {
                instanceRequested: true,
+               onboardStatus: 'FINISH_SETUP',
                organizationUrl: `${name}.dailykit.org`,
             },
          },

@@ -67,6 +67,7 @@ export const Company = () => {
             _set: {
                timeZone: form.timezone,
                currency: form.currency,
+               onboardStatus: 'ABOUT_YOURSELF',
                organizationName: form.company,
             },
          },

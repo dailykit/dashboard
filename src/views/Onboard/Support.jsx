@@ -12,13 +12,32 @@ import {
    CheckBoxWrapper,
 } from './styled'
 import Layout from './Layout'
+import { useAuth } from '../../store/auth'
 import { BulbEmoji } from '../../assets/icons'
 
 export const Support = () => {
+   const { user } = useAuth()
    const history = useHistory()
    const [support, setSupport] = React.useState(false)
+   const [update] = useMutation(UPDATE_ORGANIZATION, {
+      onCompleted: () => {
+         history.push('/signup/installation')
+      },
+      onError: error => {
+         console.log(error)
+      },
+   })
 
-   const nextPage = () => history.push('/signup/installation')
+   const nextPage = () => {
+      update({
+         variables: {
+            id: user.organization.id,
+            _set: {
+               onboardStatus: 'INSTALLATION',
+            },
+         },
+      })
+   }
    const prevPage = () => history.push('/signup/hosting')
 
    return (

@@ -1,16 +1,35 @@
 import React from 'react'
+import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 
 import Layout from './Layout'
 import { Radio } from '../../components'
 import { useAuth } from '../../store/auth'
+import { UPDATE_ORGANIZATION } from '../../graphql'
 import { Footer, Main, Wrapper, Button } from './styled'
 
 export const Hosting = () => {
    const history = useHistory()
    const { user } = useAuth()
+   const [update] = useMutation(UPDATE_ORGANIZATION, {
+      onCompleted: () => {
+         history.push('/signup/support')
+      },
+      onError: error => {
+         console.log(error)
+      },
+   })
 
-   const nextPage = () => history.push('/signup/support')
+   const nextPage = () => {
+      update({
+         variables: {
+            id: user.organization.id,
+            _set: {
+               onboardStatus: 'SUPPORT',
+            },
+         },
+      })
+   }
    const prevPage = () => history.push('/signup/about-yourself')
 
    return (

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
-import { UPDATE_USER } from '../../graphql'
+import { UPDATE_USER, UPDATE_ORGANIZATION } from '../../graphql'
 import { Footer, Main, Wrapper, Field, Label, Form, Button } from './styled'
 
 export const AboutYourself = () => {
@@ -14,10 +14,24 @@ export const AboutYourself = () => {
       phoneNumber: '',
       designation: '',
    })
-
-   const [update] = useMutation(UPDATE_USER, {
+   const [update_org] = useMutation(UPDATE_ORGANIZATION, {
       onCompleted: () => {
          history.push('/signup/hosting')
+      },
+      onError: error => {
+         console.log(error)
+      },
+   })
+   const [update] = useMutation(UPDATE_USER, {
+      onCompleted: () => {
+         update_org({
+            variables: {
+               id: user.organization.id,
+               _set: {
+                  onboardStatus: 'HOSTING',
+               },
+            },
+         })
       },
       onError: error => {
          console.log(error)

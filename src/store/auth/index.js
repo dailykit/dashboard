@@ -73,6 +73,34 @@ export const AuthProvider = ({ children }) => {
          if (Array.isArray(admins) && admins.length) {
             const [admin] = admins
             dispatch({ type: 'SET_USER', payload: admin })
+            const { onboardStatus: status = '' } = admin.organization
+            if (status) {
+               switch (status) {
+                  case 'COMPANY':
+                     history.push('/signup/company')
+                     break
+                  case 'ABOUT_YOURSELF':
+                     history.push('/signup/about-yourself')
+                     break
+                  case 'HOSTING':
+                     history.push('/signup/hosting')
+                     break
+                  case 'SUPPORT':
+                     history.push('/signup/support')
+                     break
+                  case 'INSTALLATION':
+                     history.push('/signup/installation')
+                     break
+                  case 'FINISH_SETUP':
+                     history.push('/signup/finish-setup')
+                     break
+                  case 'ONBOARDED':
+                     history.push('/')
+                     break
+                  default:
+                     break
+               }
+            }
          }
       }
    }, [loading, admins])
