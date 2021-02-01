@@ -248,11 +248,11 @@ const GifCycle = () => {
                <h1 className="mb-3 text-2xl font-medium text-white ">
                   You're DailyOS is ready to use.
                </h1>
-               {user.organization.organizationUrl && (
+               {user.organization.url && (
                   <a
                      target="__blank"
                      rel="noopener noreferrer"
-                     href={`https://${user.organization.organizationUrl}/desktop`}
+                     href={`https://${user.organization.url}/desktop`}
                      className="bg-green-500 text-white rounded inline-flex items-center px-3 h-10"
                   >
                      Go to DailyOS

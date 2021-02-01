@@ -18,16 +18,9 @@ const reducers = (state, { type, payload }) => {
             user: {
                name: '',
                email: '',
-               printNodePassword: '',
                organization: {
                   id: '',
                   url: '',
-                  name: '',
-                  status: '',
-                  datahubUrl: '',
-                  adminSecret: '',
-                  printNodeKey: '',
-                  stripeAccountId: '',
                },
             },
             onboard: {
@@ -60,18 +53,9 @@ export const AuthProvider = ({ children }) => {
    const [state, dispatch] = React.useReducer(reducers, {
       authenticated: false,
       user: {
-         name: '',
          email: '',
-         printNodePassword: '',
          organization: {
             id: null,
-            url: '',
-            name: '',
-            status: '',
-            datahubUrl: '',
-            adminSecret: '',
-            printNodeKey: '',
-            stripeAccountId: '',
          },
       },
       onboard: {
@@ -79,10 +63,7 @@ export const AuthProvider = ({ children }) => {
       },
    })
 
-   const {
-      loading,
-      data: { organizationAdmins: admins = [] } = {},
-   } = useSubscription(USER, {
+   const { loading, data: { admins = [] } = {} } = useSubscription(USER, {
       skip: !state?.user?.email,
       variables: { where: { email: { _eq: state?.user?.email } } },
    })

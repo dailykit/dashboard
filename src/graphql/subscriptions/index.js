@@ -29,10 +29,8 @@ export const ADMIN_EXISTS = gql`
 `
 
 export const USER = gql`
-   subscription organizationAdmins(
-      $where: organization_organizationAdmin_bool_exp
-   ) {
-      organizationAdmins(where: $where) {
+   subscription admins($where: organization_organizationAdmin_bool_exp) {
+      admins: organizationAdmins(where: $where) {
          id
          email
          firstName
@@ -50,9 +48,9 @@ export const USER = gql`
             printNodeKey
             instanceStatus
             stripeAccountId
-            organizationUrl
-            organizationName
             instanceRequested
+            url: organizationUrl
+            name: organizationName
          }
       }
    }
