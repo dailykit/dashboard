@@ -94,12 +94,16 @@ export const AuthProvider = ({ children }) => {
    }, [loading, admins])
 
    React.useEffect(() => {
-      const exists = localStorage.key('token')
-      if (exists) {
-         const profile = jwt_decode(localStorage.getItem('token'))
-         if (profile?.email) {
-            dispatch({ type: 'SET_USER', payload: { email: profile.email } })
+      try {
+         const token = localStorage.getItem('token')
+         if (token) {
+            const profile = jwt_decode(token)
+            if (profile?.email) {
+               dispatch({ type: 'SET_USER', payload: { email: profile.email } })
+            }
          }
+      } catch (error) {
+         console.log(error)
       }
    }, [])
 
