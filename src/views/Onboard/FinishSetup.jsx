@@ -130,7 +130,7 @@ export const FinishSetup = () => {
                         value={option}
                         onClick={() => setOption('source')}
                      >
-                        Website
+                        Marketplace
                      </Radio.Option>
                      <Radio.Option
                         id="demo"
@@ -138,7 +138,15 @@ export const FinishSetup = () => {
                         value={option}
                         onClick={() => setOption('demo')}
                      >
-                        Demo
+                        Dummy Content
+                     </Radio.Option>
+                     <Radio.Option
+                        id="empty"
+                        name="import"
+                        value={option}
+                        onClick={() => setOption('empty')}
+                     >
+                        Start Empty
                      </Radio.Option>
                   </Radio>
                </section>
@@ -188,6 +196,7 @@ export const FinishSetup = () => {
                   </section>
                )}
                {option === 'demo' && <section className="mt-3">demo</section>}
+               {option === 'empty' && <section className="mt-3">empty</section>}
             </section>
          </Main>
       </Layout>

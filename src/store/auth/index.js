@@ -1,7 +1,7 @@
 import React from 'react'
 import jwt_decode from 'jwt-decode'
-import { useLocation } from 'react-router-dom'
 import { useSubscription } from '@apollo/client'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const AuthContext = React.createContext()
 
@@ -55,6 +55,7 @@ const reducers = (state, { type, payload }) => {
 }
 
 export const AuthProvider = ({ children }) => {
+   const history = useHistory()
    const location = useLocation()
    const [state, dispatch] = React.useReducer(reducers, {
       authenticated: false,
@@ -87,9 +88,11 @@ export const AuthProvider = ({ children }) => {
    })
 
    React.useEffect(() => {
-      if (!loading && Array.isArray(admins) && admins.length) {
-         const [admin] = admins
-         dispatch({ type: 'SET_USER', payload: admin })
+      if (!loading) {
+         if (Array.isArray(admins) && admins.length) {
+            const [admin] = admins
+            dispatch({ type: 'SET_USER', payload: admin })
+         }
       }
    }, [loading, admins])
 
@@ -110,6 +113,7 @@ export const AuthProvider = ({ children }) => {
    const logout = React.useCallback(() => {
       localStorage.removeItem('token')
       dispatch({ type: 'LOGOUT' })
+      history.push('/login')
    }, [])
 
    React.useEffect(() => {

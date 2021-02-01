@@ -69,7 +69,9 @@ export const TIMEZONES = gql`
 
 export const MARKETPLACE_COMPANIES = gql`
    query companies {
-      companies: marketPlaceHub_marketPlaceCompany {
+      companies: marketPlaceHub_marketPlaceCompany(
+         where: { parseHubProjectId: { _is_null: false } }
+      ) {
          title
       }
    }

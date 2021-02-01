@@ -3,6 +3,7 @@ import tw from 'tailwind.macro'
 import styled from 'styled-components'
 import { useHistory, Link } from 'react-router-dom'
 
+import Header from './Onboard/Header'
 import { useAuth } from '../store/auth'
 
 export const Login = () => {
@@ -44,39 +45,42 @@ export const Login = () => {
       }
    }
    return (
-      <Panel>
-         <h1 className="text-2xl mb-6">Login</h1>
-         <FieldSet>
-            <Label htmlFor="email">Email</Label>
-            <Input
-               type="email"
-               name="email"
-               value={form.email}
-               onChange={onChange}
-               placeholder="Enter your email"
-            />
-         </FieldSet>
-         <FieldSet>
-            <Label htmlFor="password">Password</Label>
-            <Input
-               name="password"
-               type="password"
-               onChange={onChange}
-               value={form.password}
-               placeholder="Enter your password"
-            />
-         </FieldSet>
-         <Link to="/signup" className="mb-2 self-end text-indigo-500">
-            Register instead?
-         </Link>
-         <Submit
-            className={!isValid ? 'disabled' : ''}
-            onClick={() => isValid && submit()}
-         >
-            Submit
-         </Submit>
-         {error && <Error>{error}</Error>}
-      </Panel>
+      <div>
+         <Header />
+         <Panel>
+            <h1 className="text-2xl mb-6">Login</h1>
+            <FieldSet>
+               <Label htmlFor="email">Email</Label>
+               <Input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={onChange}
+                  placeholder="Enter your email"
+               />
+            </FieldSet>
+            <FieldSet>
+               <Label htmlFor="password">Password</Label>
+               <Input
+                  name="password"
+                  type="password"
+                  onChange={onChange}
+                  value={form.password}
+                  placeholder="Enter your password"
+               />
+            </FieldSet>
+            <Link to="/signup" className="mb-2 self-end text-indigo-500">
+               Register instead?
+            </Link>
+            <Submit
+               className={!isValid ? 'disabled' : ''}
+               onClick={() => isValid && submit()}
+            >
+               Submit
+            </Submit>
+            {error && <Error>{error}</Error>}
+         </Panel>
+      </div>
    )
 }
 
