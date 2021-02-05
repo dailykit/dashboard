@@ -1,4 +1,5 @@
 import React from 'react'
+import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -14,6 +15,7 @@ import {
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
 import { BulbEmoji } from '../../assets/icons'
+import { UPDATE_ORGANIZATION } from '../../graphql'
 
 export const Support = () => {
    const { user } = useAuth()
