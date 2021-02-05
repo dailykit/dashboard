@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
 import { UPDATE_USER, UPDATE_ORGANIZATION } from '../../graphql'
-import { Footer, Main, Wrapper, Field, Label, Form, Button } from './styled'
+import { Footer, Main, Field, Label, Form, Button, H2 } from './styled'
 
 export const AboutYourself = () => {
    const { user } = useAuth()
@@ -70,47 +70,45 @@ export const AboutYourself = () => {
 
    return (
       <Layout>
-         <Wrapper>
-            <Main>
-               <div>
-                  <h2>Tell us about yourself</h2>
-                  <Form>
-                     <Field>
-                        <Label htmlFor="designation">Designation</Label>
-                        <input
-                           type="text"
-                           required
-                           id="designation"
-                           name="designation"
-                           value={form.designation}
-                           autoComplete="off"
-                           placeholder="Enter your designation"
-                           onChange={e => handleChange(e)}
-                        />
-                     </Field>
-                     <Field>
-                        <Label htmlFor="phoneNumber">Phone Number</Label>
-                        <input
-                           type="tel"
-                           id="phoneNumber"
-                           name="phoneNumber"
-                           required
-                           value={form.phoneNumber}
-                           autoComplete="off"
-                           onChange={e => handleChange(e)}
-                           placeholder="Enter your phone number"
-                        />
-                     </Field>
-                  </Form>
-               </div>
-            </Main>
-            <Footer>
-               <Button onClick={() => history.push('/signup/company')}>
-                  Back
-               </Button>
-               <Button onClick={submit}>Next</Button>
-            </Footer>
-         </Wrapper>
+         <Main>
+            <section className="mt-8 mx-auto w-1/4">
+               <H2>Tell us about yourself</H2>
+               <Form>
+                  <Field>
+                     <Label htmlFor="designation">Designation</Label>
+                     <input
+                        type="text"
+                        required
+                        id="designation"
+                        name="designation"
+                        value={form.designation}
+                        autoComplete="off"
+                        placeholder="Enter your designation"
+                        onChange={e => handleChange(e)}
+                     />
+                  </Field>
+                  <Field>
+                     <Label htmlFor="phoneNumber">Phone Number</Label>
+                     <input
+                        type="tel"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        required
+                        value={form.phoneNumber}
+                        autoComplete="off"
+                        onChange={e => handleChange(e)}
+                        placeholder="Enter your phone number"
+                     />
+                  </Field>
+               </Form>
+            </section>
+         </Main>
+         <Footer>
+            <Button onClick={() => history.push('/signup/company')}>
+               Back
+            </Button>
+            <Button onClick={submit}>Next</Button>
+         </Footer>
       </Layout>
    )
 }

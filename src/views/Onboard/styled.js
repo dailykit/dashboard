@@ -9,36 +9,33 @@ export const Button = styled.button`
 `
 
 export const Footer = styled.footer`
-   height: 103px;
+   padding: 0 16px;
    grid-area: footer;
    ${tw`flex items-center justify-between`}
 `
 
 export const Main = styled.main`
-   overflow-y: auto;
-   height: calc(100% - 103px);
+   grid-area: main;
+   overflow-y: scroll;
+   overflow-x: hidden;
+   background: #ffffff;
+   margin: 16px 16px 0 16px;
    border: 1px solid #ececec;
-   ${tw`pt-20 bg-white`};
-   > div {
-      width: 320px;
-      ${tw`mx-auto`}
-   }
 `
 
-export const Wrapper = styled.div`
-   ${tw`flex flex-col h-full w-full`}
-   h2 {
-      font-size: 20px;
-      font-weight: 400;
-      color: #555b6e;
-      margin-bottom: 24px;
-   }
-   h4 {
-      font-size: 16px;
-      font-weight: 400;
-      color: #555b6e;
-      margin-bottom: 24px;
-   }
+export const H2 = styled.h2`
+   font-size: 20px;
+   font-weight: 400;
+   color: #555b6e;
+   margin-bottom: 24px;
+`
+
+export const H4 = styled.h4`
+   font-size: 16px;
+   font-weight: 400;
+   color: #555b6e;
+   margin-top: 24px;
+   margin-bottom: 14px;
 `
 
 export const Form = styled.form`
@@ -89,12 +86,6 @@ export const Field = styled.div`
 
 export const Label = styled.label`
    ${tw`text-gray-600 mb-1`}
-`
-
-export const ExtMain = styled(Main)`
-   > div {
-      width: 640px;
-   }
 `
 
 export const CheckBoxWrapper = styled.div`

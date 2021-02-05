@@ -1,12 +1,11 @@
 import React from 'react'
-import tw from 'tailwind.macro'
 import { useHistory } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
 
 import Layout from './Layout'
 import { Radio } from '../../components'
 import { useAuth } from '../../store/auth'
-import { Button, Main, Footer, Label } from './styled'
+import { Button, Main, Footer, Label, H2 } from './styled'
 import {
    UPDATE_ORGANIZATION,
    MARKETPLACE_COMPANIES,
@@ -82,8 +81,8 @@ export const Import = () => {
    return (
       <Layout>
          <Main>
-            <section className="mx-auto w-3/6">
-               <h2 className="text-xl text-gray-700 mb-3">Import Data</h2>
+            <section className="mt-8 mx-auto w-2/4">
+               <H2 className="text-xl text-gray-700 mb-3">Import Data</H2>
                <section>
                   <Radio>
                      <Radio.Option

@@ -33,9 +33,8 @@ const Layout = ({ children }) => {
    }
 
    return (
-      <Styles.Wrapper>
+      <Styles.Wrapper step={onboard.step}>
          <Header />
-         <Styles.Main>{children}</Styles.Main>
          <Styles.Aside>
             <Styles.Stage height1={evalHeightFirst(onboard.step)}>
                Basic Information
@@ -74,6 +73,7 @@ const Layout = ({ children }) => {
                </>
             </Styles.Stage>
          </Styles.Aside>
+         {children}
       </Styles.Wrapper>
    )
 }
@@ -82,19 +82,20 @@ export default Layout
 
 const Styles = {
    Wrapper: styled.div`
-      background: #fafafa;
       height: 100vh;
       display: grid;
-      grid-gap: 16px 0;
-      grid-template-rows: 40px 1fr;
+      overflow: hidden;
+      background: #fafafa;
+      grid-template-rows: ${({ step }) =>
+         step === 7 ? '40px 1fr 16px' : '40px 1fr 100px'};
       grid-template-columns: 1fr 320px;
-      grid-template-areas:
-         'head head'
-         'main aside';
-   `,
-   Main: styled.main`
-      grid-area: main;
-      padding: 0 16px;
+      grid-template-areas: ${({ step }) =>
+         step === 7
+            ? `'head head'
+         'main aside'`
+            : `'head head'
+         'main aside'
+         'footer aside'`};
    `,
    Aside: styled.aside`
       grid-area: aside;

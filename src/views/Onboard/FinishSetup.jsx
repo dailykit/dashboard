@@ -1,12 +1,10 @@
 import React from 'react'
-import tw from 'tailwind.macro'
-import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { Gif } from '@giphy/react-components'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import Layout from './Layout'
-import { Button } from './styled'
+import { Button, Main } from './styled'
 import { useAuth } from '../../store/auth'
 import { UPDATE_ORGANIZATION } from '../../graphql'
 
@@ -70,21 +68,14 @@ const gif_ids = {
 export const FinishSetup = () => {
    const { user } = useAuth()
 
-   if (user?.organization?.onboardStatus === 'SETUP_DOMAIN') {
-      return (
-         <Layout>
-            <Main>
-               <Installation />
-            </Main>
-         </Layout>
-      )
-   }
    return (
       <Layout>
          <Main>
-            <div className="relative">
+            {user?.organization?.onboardStatus === 'SETUP_DOMAIN' ? (
+               <Installation />
+            ) : (
                <GifCycle />
-            </div>
+            )}
          </Main>
       </Layout>
    )
@@ -183,7 +174,7 @@ const GifCycle = () => {
       })()
    }, [])
    return (
-      <>
+      <div className="relative">
          {user.organization?.instanceStatus === 'SETUP_COMPLETED' ? (
             <header className="text-left p-3 absolute z-10 inset-0 h-full">
                <h1 className="mb-3 text-2xl font-medium text-white ">
@@ -211,10 +202,8 @@ const GifCycle = () => {
                </p>
             </header>
          )}
-         <section className="bg-gray-100">
-            {gifs.length > 0 && <RenderGif gifs={gifs} />}
-         </section>
-      </>
+         <section>{gifs.length > 0 && <RenderGif gifs={gifs} />}</section>
+      </div>
    )
 }
 
@@ -239,10 +228,3 @@ const RenderGif = ({ gifs }) => {
    }, [gifs])
    return gif && <Gif gif={gif} width={window.innerWidth - 354} />
 }
-
-const Main = styled.div`
-   overflow: hidden;
-   height: calc(100vh - 72px);
-   border: 1px solid #ececec;
-   ${tw`bg-white`};
-`

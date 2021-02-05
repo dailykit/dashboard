@@ -6,10 +6,10 @@ import {
    Tip,
    Info,
    Card,
+   Main,
    Footer,
    Button,
-   Wrapper,
-   ExtMain,
+   H2,
    CheckBoxWrapper,
 } from './styled'
 import Layout from './Layout'
@@ -44,60 +44,58 @@ export const Support = () => {
 
    return (
       <Layout>
-         <Wrapper>
-            <ExtMain>
-               <div>
-                  <h2>Installation and Onboarding Support</h2>
-                  <CheckBoxWrapper>
-                     <input
-                        type="checkbox"
-                        id="support"
-                        checked={support}
-                        onChange={() => setSupport(!support)}
-                     />
-                     <label htmlFor="support">
-                        I want installation and onboard support
-                     </label>
-                  </CheckBoxWrapper>
-                  <Info>
-                     <div>
-                        <Tip>
-                           <span>
-                              <BulbEmoji />
-                           </span>
-                           <p>
-                              Dailykit is here to help! With simplified
-                              intallation and onboarding support, we will
-                           </p>
-                        </Tip>
-                        <ul>
-                           <li>Setup your software</li>
-                           <li>Import your data</li>
-                           <li>Train your staff</li>
-                           <li>Provide 3 months of 24x7 world class support</li>
-                        </ul>
-                     </div>
-                     <Card>
-                        <h4>We have a plan for you</h4>
-                        <span id="strike">$3000</span>
-                        <span id="discount">100% off (limited)</span>
-                        <span id="price">Free</span>
-                     </Card>
-                  </Info>
-               </div>
-            </ExtMain>
-            <Footer>
-               <Button onClick={() => prevPage()}>Back</Button>
-               <Button
-                  onClick={() => nextPage()}
-                  style={{
-                     background: '#04a777',
-                  }}
-               >
-                  Next
-               </Button>
-            </Footer>
-         </Wrapper>
+         <Main>
+            <section className="mt-8 mx-auto w-2/4">
+               <H2>Installation and Onboarding Support</H2>
+               <CheckBoxWrapper>
+                  <input
+                     type="checkbox"
+                     id="support"
+                     checked={support}
+                     onChange={() => setSupport(!support)}
+                  />
+                  <label htmlFor="support">
+                     I want installation and onboard support
+                  </label>
+               </CheckBoxWrapper>
+               <Info>
+                  <div>
+                     <Tip>
+                        <span>
+                           <BulbEmoji />
+                        </span>
+                        <p className="w-3/4">
+                           Dailykit is here to help! With simplified intallation
+                           and onboarding support, we will
+                        </p>
+                     </Tip>
+                     <ul>
+                        <li>Setup your software</li>
+                        <li>Import your data</li>
+                        <li>Train your staff</li>
+                        <li>Provide 3 months of 24x7 world class support</li>
+                     </ul>
+                  </div>
+                  <Card>
+                     <h4>We have a plan for you</h4>
+                     <span id="strike">$3000</span>
+                     <span id="discount">100% off (limited)</span>
+                     <span id="price">Free</span>
+                  </Card>
+               </Info>
+            </section>
+         </Main>
+         <Footer>
+            <Button onClick={() => prevPage()}>Back</Button>
+            <Button
+               onClick={() => nextPage()}
+               style={{
+                  background: '#04a777',
+               }}
+            >
+               Next
+            </Button>
+         </Footer>
       </Layout>
    )
 }
