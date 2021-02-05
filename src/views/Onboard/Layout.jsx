@@ -8,19 +8,21 @@ const Layout = ({ children }) => {
    const { user, onboard } = useAuth()
    const evalHeightFirst = step => {
       if (step === 1) {
-         return 38
-      } else if (step >= 2) {
-         return 74
+         return 28
+      } else if (step === 2) {
+         return 55
+      } else if (step >= 3) {
+         return 78
       }
    }
    const evalHeightSecond = step => {
-      if (step === 3) {
+      if (step === 4) {
          return 21
-      } else if (step === 4) {
-         return 42
       } else if (step === 5) {
-         return 63
+         return 42
       } else if (step === 6) {
+         return 63
+      } else if (step === 7) {
          return 83
       }
    }
@@ -39,9 +41,12 @@ const Layout = ({ children }) => {
                Basic Information
                <>
                   <Styles.Step className={isStepActive(1)}>
-                     Tell us about your company
+                     Register
                   </Styles.Step>
                   <Styles.Step className={isStepActive(2)}>
+                     Tell us about your company
+                  </Styles.Step>
+                  <Styles.Step className={isStepActive(3)}>
                      Tell us about yourself
                   </Styles.Step>
                </>
@@ -49,7 +54,7 @@ const Layout = ({ children }) => {
             <Styles.Stage height2={evalHeightSecond(onboard.step)}>
                Setup your Account
                <>
-                  <Styles.Step className={isStepActive(3)}>
+                  <Styles.Step className={isStepActive(4)}>
                      <span>Hosting ({user.organization?.hosting?.type})</span>
                      <span className="price">
                         {user.organization?.hosting?.cost === 0
@@ -57,13 +62,13 @@ const Layout = ({ children }) => {
                            : user.organization?.hosting?.cost}
                      </span>
                   </Styles.Step>
-                  <Styles.Step className={isStepActive(4)}>
+                  <Styles.Step className={isStepActive(5)}>
                      <span>Onboarding Support</span>
                   </Styles.Step>
-                  <Styles.Step className={isStepActive(5)}>
+                  <Styles.Step className={isStepActive(6)}>
                      <span>Installation</span>
                   </Styles.Step>
-                  <Styles.Step className={isStepActive(6)}>
+                  <Styles.Step className={isStepActive(7)}>
                      <span>Finish Setup</span>
                   </Styles.Step>
                </>

@@ -127,28 +127,32 @@ export const AuthProvider = ({ children }) => {
 
    React.useEffect(() => {
       switch (location.pathname) {
-         case '/signup/company': {
+         case '/signup': {
             dispatch({ type: 'CHANGE_STEP', payload: 1 })
             break
          }
-         case '/signup/about-yourself': {
+         case '/signup/company': {
             dispatch({ type: 'CHANGE_STEP', payload: 2 })
             break
          }
-         case '/signup/hosting': {
+         case '/signup/about-yourself': {
             dispatch({ type: 'CHANGE_STEP', payload: 3 })
             break
          }
-         case '/signup/support': {
+         case '/signup/hosting': {
             dispatch({ type: 'CHANGE_STEP', payload: 4 })
             break
          }
-         case '/signup/installation': {
+         case '/signup/support': {
             dispatch({ type: 'CHANGE_STEP', payload: 5 })
             break
          }
-         case '/signup/finish-setup': {
+         case '/signup/installation': {
             dispatch({ type: 'CHANGE_STEP', payload: 6 })
+            break
+         }
+         case '/signup/finish-setup': {
+            dispatch({ type: 'CHANGE_STEP', payload: 7 })
             break
          }
       }
