@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
    }
 
    const isStepActive = start => {
-      const steps = [Array.from(new Array(8 - start).keys(), i => i + start)]
+      const steps = [...Array.from(new Array(8 - start).keys(), i => i + start)]
       return steps.includes(onboard.step) ? 'active' : ''
    }
 
