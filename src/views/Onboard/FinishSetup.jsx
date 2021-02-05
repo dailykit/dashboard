@@ -1,18 +1,14 @@
 import React from 'react'
 import tw from 'tailwind.macro'
 import styled from 'styled-components'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Gif } from '@giphy/react-components'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import Layout from './Layout'
-import { Radio } from '../../components'
-import { Label, Button } from './styled'
+import { Button } from './styled'
 import { useAuth } from '../../store/auth'
-import {
-   MARKETPLACE_COMPANIES,
-   INSERT_COMPANY_MENU_IMPORT,
-} from '../../graphql'
+import { UPDATE_ORGANIZATION } from '../../graphql'
 
 const gif_ids = {
    launch: [
@@ -73,133 +69,78 @@ const gif_ids = {
 
 export const FinishSetup = () => {
    const { user } = useAuth()
-   const [url, setUrl] = React.useState('')
-   const [error, setError] = React.useState('')
-   const [title, setTitle] = React.useState('')
-   const [option, setOption] = React.useState('source')
-   const [create, { loading }] = useMutation(INSERT_COMPANY_MENU_IMPORT, {
-      onError: () => {
-         setError('Something went wrong, please try again!')
-      },
-   })
-   const { data: { companies = [] } = {} } = useQuery(MARKETPLACE_COMPANIES, {
-      onCompleted: ({ companies = [] }) => {
-         if (companies.length > 0) {
-            const [company] = companies
-            setTitle(company.title)
-         }
-      },
-   })
 
-   const onSubmit = () => {
-      setError('')
-      if (!url.trim()) return setError('Menu URL is required.')
-      if (
-         !new RegExp(
-            /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
-         ).test(url)
+   if (user?.organization?.onboardStatus === 'SETUP_DOMAIN') {
+      return (
+         <Layout>
+            <Main>
+               <Installation />
+            </Main>
+         </Layout>
       )
-         return setError('Menu URL must be valid!')
-      if (!title.trim()) return setError('Company is required.')
-      if (url.trim() && title) {
-         create({
-            variables: {
-               object: {
-                  exportUrl: url,
-                  marketPlaceCompanyTitle: title,
-                  organizationId: user?.organization?.id,
-               },
-            },
-         })
-      }
    }
-
    return (
       <Layout>
          <Main>
-            <Top>
+            <div className="relative">
                <GifCycle />
-            </Top>
-            <section className="p-3">
-               <h2 className="text-xl text-gray-700 mb-3">Import Data</h2>
-               <section>
-                  <Radio>
-                     <Radio.Option
-                        id="source"
-                        name="import"
-                        value={option}
-                        onClick={() => setOption('source')}
-                     >
-                        Marketplace
-                     </Radio.Option>
-                     <Radio.Option
-                        id="demo"
-                        name="import"
-                        value={option}
-                        onClick={() => setOption('demo')}
-                     >
-                        Dummy Content
-                     </Radio.Option>
-                     <Radio.Option
-                        id="empty"
-                        name="import"
-                        value={option}
-                        onClick={() => setOption('empty')}
-                     >
-                        Start Empty
-                     </Radio.Option>
-                  </Radio>
-               </section>
-               {option === 'source' && (
-                  <section className="mt-3 space-y-3">
-                     <fieldset className="flex flex-col">
-                        <Label htmlFor="marketPlaceCompany">
-                           Select Company
-                        </Label>
-                        <select
-                           value={title}
-                           id="marketPlaceCompany"
-                           name="marketPlaceCompany"
-                           onChange={e => setTitle(e.target.value)}
-                           className="h-10 border rounded pl-2 w-64"
-                        >
-                           {companies.map(company => (
-                              <option key={company.title} value={company.title}>
-                                 {company.title}
-                              </option>
-                           ))}
-                        </select>
-                     </fieldset>
-                     <fieldset className=" flex flex-col">
-                        <Label htmlFor="menuUrl">Menu URL</Label>
-                        <input
-                           id="menuUrl"
-                           value={url}
-                           name="menuUrl"
-                           placeholder="Enter menu url"
-                           onChange={e => setUrl(e.target.value)}
-                           className="h-10 border rounded pl-2 w-full"
-                        />
-                     </fieldset>
-                     <Button
-                        type="button"
-                        onClick={onSubmit}
-                        disabled={!url || loading}
-                     >
-                        {loading ? 'Saving' : 'Save'}
-                     </Button>
-                     {error && (
-                        <span className="self-start block text-red-500 mt-2">
-                           {error}
-                        </span>
-                     )}
-                  </section>
-               )}
-               {option === 'demo' && <section className="mt-3">demo</section>}
-               {option === 'empty' && <section className="mt-3">empty</section>}
-            </section>
+            </div>
          </Main>
       </Layout>
+   )
+}
+
+const Installation = () => {
+   const { user } = useAuth()
+   const [name, setName] = React.useState('')
+   const [update, { loading }] = useMutation(UPDATE_ORGANIZATION, {
+      onError: error => {
+         console.log(error)
+      },
+   })
+
+   const submit = () => {
+      update({
+         variables: {
+            id: user.organization?.id,
+            _set: {
+               instanceRequested: true,
+               onboardStatus: 'FINISH_SETUP',
+               organizationUrl: `${name}.dailykit.org`,
+            },
+         },
+      })
+   }
+   return (
+      <div className="mt-8 w-2/6 mx-auto text-center">
+         <h2 className="text-3xl text-green-700 mb-4">Customize your URL</h2>
+         <p className="text-center text-gray-500 mb-2">
+            This is where you will access your apps and manage your team. Make
+            sure to bookmark it once you’re inside.
+         </p>
+         <section className="mb-3 flex flex-col items-center">
+            <input
+               required
+               id="name"
+               type="text"
+               name="name"
+               value={name}
+               autoComplete="off"
+               placeholder="enter your subdomain"
+               onChange={e => setName(e.target.value.trim())}
+               className="text-center h-10 border-b-2 border-green-400 focus:border-green-600"
+            />
+            <span className="text-left text-green-500">
+               {name}.dailykit.org
+            </span>
+         </section>
+         <Button
+            onClick={submit}
+            disabled={!name || !user?.keycloak?.email_verified || loading}
+         >
+            {loading ? 'Saving' : 'Save'}
+         </Button>
+      </div>
    )
 }
 
@@ -300,28 +241,8 @@ const RenderGif = ({ gifs }) => {
 }
 
 const Main = styled.div`
-   overflow-y: auto;
+   overflow: hidden;
    height: calc(100vh - 72px);
    border: 1px solid #ececec;
    ${tw`bg-white`};
-`
-
-const Top = styled.section`
-   height: 50%;
-   overflow: hidden;
-   position: relative;
-   > header {
-      &:before {
-         content: '';
-         z-index: -1;
-         ${tw`absolute inset-0`}
-         background: rgb(255,255,255);
-         background: linear-gradient(
-            0deg,
-            rgba(255, 255, 255, 0) 22%,
-            rgba(0, 0, 0, 0.45) 51%,
-            rgba(0, 0, 0, 0.8) 100%
-         );
-      }
-   }
 `
