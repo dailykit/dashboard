@@ -23,7 +23,7 @@ export const Support = () => {
    const [support, setSupport] = React.useState(false)
    const [update] = useMutation(UPDATE_ORGANIZATION, {
       onCompleted: () => {
-         history.push('/signup/installation')
+         history.push('/signup/import')
       },
       onError: error => {
          console.log(error)
@@ -35,7 +35,7 @@ export const Support = () => {
          variables: {
             id: user.organization.id,
             _set: {
-               onboardStatus: 'INSTALLATION',
+               onboardStatus: 'IMPORT',
             },
          },
       })

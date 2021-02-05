@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
    }
 
    const isStepActive = start => {
-      const steps = Array.from(new Array(8 - start).keys(), i => i + start)
+      const steps = [Array.from(new Array(8 - start).keys(), i => i + start)]
       return steps.includes(onboard.step) ? 'active' : ''
    }
 
@@ -66,7 +66,7 @@ const Layout = ({ children }) => {
                      <span>Onboarding Support</span>
                   </Styles.Step>
                   <Styles.Step className={isStepActive(6)}>
-                     <span>Installation</span>
+                     <span>Import</span>
                   </Styles.Step>
                   <Styles.Step className={isStepActive(7)}>
                      <span>Finish Setup</span>

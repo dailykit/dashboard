@@ -88,8 +88,11 @@ export const AuthProvider = ({ children }) => {
                   case 'SUPPORT':
                      history.push('/signup/support')
                      break
-                  case 'INSTALLATION':
-                     history.push('/signup/installation')
+                  case 'IMPORT':
+                     history.push('/signup/import')
+                     break
+                  case 'SETUP_DOMAIN':
+                     history.push('/signup/finish-setup')
                      break
                   case 'FINISH_SETUP':
                      history.push('/signup/finish-setup')
@@ -147,7 +150,7 @@ export const AuthProvider = ({ children }) => {
             dispatch({ type: 'CHANGE_STEP', payload: 5 })
             break
          }
-         case '/signup/installation': {
+         case '/signup/import': {
             dispatch({ type: 'CHANGE_STEP', payload: 6 })
             break
          }

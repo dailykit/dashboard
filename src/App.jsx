@@ -5,6 +5,7 @@ import {
    Home,
    Login,
    Signup,
+   Import,
    Account,
    Payment,
    Company,
@@ -13,7 +14,6 @@ import {
    Instance,
    DeviceHub,
    FinishSetup,
-   Installation,
    AboutYourself,
    EmailIntegrations,
    DeliveryPartnerships,
@@ -61,8 +61,8 @@ const App = () => {
          <Route path="/signup/support" exact>
             <Support />
          </Route>
-         <Route path="/signup/installation" exact>
-            <Installation />
+         <Route path="/signup/import" exact>
+            <Import />
          </Route>
          <Route path="/signup/finish-setup" exact>
             <FinishSetup />
