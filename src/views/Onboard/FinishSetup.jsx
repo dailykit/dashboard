@@ -6,6 +6,7 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import Layout from './Layout'
 import { Button, Main } from './styled'
 import { useAuth } from '../../store/auth'
+import VerifyEmailBanner from './VerifyEmailBanner'
 import { UPDATE_ORGANIZATION } from '../../graphql'
 
 const gif_ids = {
@@ -71,6 +72,7 @@ export const FinishSetup = () => {
    return (
       <Layout>
          <Main>
+            {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
             {user?.organization?.onboardStatus === 'SETUP_DOMAIN' ? (
                <Installation />
             ) : (

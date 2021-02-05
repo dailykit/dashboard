@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
+import VerifyEmailBanner from './VerifyEmailBanner'
 import { UPDATE_USER, UPDATE_ORGANIZATION } from '../../graphql'
 import { Footer, Main, Field, Label, Form, Button, H2 } from './styled'
 
@@ -71,6 +72,7 @@ export const AboutYourself = () => {
    return (
       <Layout>
          <Main>
+            {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
             <section className="mt-8 mx-auto w-1/4">
                <H2>Tell us about yourself</H2>
                <Form>

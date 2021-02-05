@@ -33,8 +33,9 @@ export const USER = gql`
       admins: organizationAdmins(where: $where) {
          id
          email
-         firstName
          lastName
+         firstName
+         keycloakId
          designation
          phoneNumber
          printNodePassword

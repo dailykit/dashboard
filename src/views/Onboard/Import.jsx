@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import Layout from './Layout'
 import { Radio } from '../../components'
 import { useAuth } from '../../store/auth'
+import VerifyEmailBanner from './VerifyEmailBanner'
 import { Button, Main, Footer, Label, H2 } from './styled'
 import {
    UPDATE_ORGANIZATION,
@@ -81,6 +82,7 @@ export const Import = () => {
    return (
       <Layout>
          <Main>
+            {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
             <section className="mt-8 mx-auto w-2/4">
                <H2 className="text-xl text-gray-700 mb-3">Import Data</H2>
                <section>

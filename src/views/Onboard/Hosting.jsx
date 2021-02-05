@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import Layout from './Layout'
 import { Radio } from '../../components'
 import { useAuth } from '../../store/auth'
+import VerifyEmailBanner from './VerifyEmailBanner'
 import { UPDATE_ORGANIZATION } from '../../graphql'
 import { Footer, H2, H4, Main, Button } from './styled'
 
@@ -35,6 +36,7 @@ export const Hosting = () => {
    return (
       <Layout>
          <Main>
+            {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
             <section className="mt-8 mx-auto w-1/4">
                <H2>Hosting</H2>
                <Radio>

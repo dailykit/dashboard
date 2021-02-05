@@ -15,6 +15,7 @@ import {
 import Layout from './Layout'
 import { useAuth } from '../../store/auth'
 import { BulbEmoji } from '../../assets/icons'
+import VerifyEmailBanner from './VerifyEmailBanner'
 import { UPDATE_ORGANIZATION } from '../../graphql'
 
 export const Support = () => {
@@ -45,6 +46,7 @@ export const Support = () => {
    return (
       <Layout>
          <Main>
+            {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
             <section className="mt-8 mx-auto w-2/4">
                <H2>Installation and Onboarding Support</H2>
                <CheckBoxWrapper>
