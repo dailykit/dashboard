@@ -38,6 +38,9 @@ export const USER = gql`
          designation
          phoneNumber
          printNodePassword
+         keycloak: keycloakUser {
+            email_verified
+         }
          organization {
             id
             hosting

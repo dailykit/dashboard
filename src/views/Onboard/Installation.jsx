@@ -60,7 +60,10 @@ export const Installation = () => {
             </div>
          </Main>
          <Footer>
-            <Button onClick={submit} disabled={!name || loading}>
+            <Button
+               onClick={submit}
+               disabled={!name || !user?.keycloak?.email_verified || loading}
+            >
                {loading ? 'Saving' : 'Save'}
             </Button>
          </Footer>
