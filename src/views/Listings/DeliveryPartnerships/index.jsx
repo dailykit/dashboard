@@ -40,7 +40,7 @@ const isCredsValid = async (token, customer) => {
 
 export const DeliveryPartnerships = () => {
    const { tab, addTab } = useTabs()
-   const { user, authenicated } = useAuth()
+   const { user, authenticated } = useAuth()
    const [selected, setSelected] = React.useState({})
    const [status, setStatus] = React.useState('LOADING')
    const [credStatus, setCredStatus] = React.useState({})
@@ -51,7 +51,7 @@ export const DeliveryPartnerships = () => {
       loading,
       data: { deliveryPartnerships: partnerships = [] } = {},
    } = useSubscription(FETCH_DELIVERY_PARTNERSHIPS, {
-      skip: !authenicated,
+      skip: !authenticated,
       variables: {
          where: {
             organizationId: {
@@ -63,9 +63,7 @@ export const DeliveryPartnerships = () => {
 
    React.useEffect(() => {
       if (!loading && Array.isArray(partnerships) && partnerships.length > 0) {
-         const [partnership] = partnerships
          setStatus('SUCCESS')
-         setInstance(partnership)
       } else if (
          !loading &&
          Array.isArray(partnerships) &&
