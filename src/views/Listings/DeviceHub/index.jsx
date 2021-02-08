@@ -8,12 +8,13 @@ import { useTabs } from '../../../store/tabs'
 
 import { Wrapper } from '../styled'
 
-import { UserContext } from '../../../store/user'
+import { Layout } from '../../../components'
+import { useAuth } from '../../../store/auth'
 
 export const DeviceHub = () => {
    const { tab, addTab } = useTabs()
    const [status, setStatus] = React.useState('IDLE')
-   const { state } = React.useContext(UserContext)
+   const { user } = useAuth()
 
    React.useEffect(() => {
       if (!tab) {
@@ -26,7 +27,7 @@ export const DeviceHub = () => {
          setStatus('LOADING')
          const url = `${process.env.REACT_APP_PLATFORM_URL}/webhooks/device`
          await axios.post(url, {
-            email: state.email,
+            email: user.email,
          })
          setStatus('SUCCESS')
       } catch (error) {
@@ -37,74 +38,76 @@ export const DeviceHub = () => {
    const copyText = text => copy(text)
 
    return (
-      <Wrapper>
-         <header className="flex justify-between  border-b pb-3 mb-4">
-            <h1 className="text-xl text-teal-700">Device Hub</h1>
-            {!state.organization.printNodeKey && (
-               <StyledButton onClick={() => initiateAccountSetup()}>
-                  {status === 'LOADING' ? 'Loading...' : 'Setup Account'}
-               </StyledButton>
+      <Layout>
+         <Wrapper>
+            <header className="flex justify-between  border-b pb-3 mb-4">
+               <h1 className="text-xl text-teal-700">Device Hub</h1>
+               {!user.organization.printNodeKey && (
+                  <StyledButton onClick={() => initiateAccountSetup()}>
+                     {status === 'LOADING' ? 'Loading...' : 'Setup Account'}
+                  </StyledButton>
+               )}
+            </header>
+            {user.organization.printNodeKey && (
+               <main>
+                  <Section className="flex flex-col items-start">
+                     <h1 className="text-xl text-teal-800">
+                        Print Node Credentials
+                     </h1>
+                     <button
+                        type="button"
+                        title="Click to copy"
+                        onClick={() => copyText(user.email)}
+                        className="text-gray-500 hover:bg-gray-100"
+                     >
+                        Email: {user.email}
+                     </button>
+                     <button
+                        type="button"
+                        title="Click to copy"
+                        onClick={() =>
+                           copyText(user.printNodePassword.slice(0, 8))
+                        }
+                        className="text-gray-500 hover:bg-gray-100"
+                     >
+                        Password: {user.printNodePassword.slice(0, 8)}
+                     </button>
+                  </Section>
+                  <Section>
+                     <h1 className="text-xl text-teal-800">Print Node Links</h1>
+                     <LinkItem
+                        target="__blank"
+                        rel="noopener noreferrer"
+                        href="https://www.printnode.com/en/download"
+                     >
+                        Download Print Node
+                     </LinkItem>
+                     <LinkItem
+                        target="__blank"
+                        rel="noopener noreferrer"
+                        href="https://www.printnode.com/en/docs/installation"
+                     >
+                        Installing Print Node
+                     </LinkItem>
+                     <LinkItem
+                        target="__blank"
+                        rel="noopener noreferrer"
+                        href="https://www.printnode.com/en/docs/supported-printers"
+                     >
+                        View supported printers
+                     </LinkItem>
+                     <LinkItem
+                        target="__blank"
+                        rel="noopener noreferrer"
+                        href="https://www.printnode.com/en/docs/supported-scales"
+                     >
+                        View supported scales
+                     </LinkItem>
+                  </Section>
+               </main>
             )}
-         </header>
-         {state.organization.printNodeKey && (
-            <main>
-               <Section className="flex flex-col items-start">
-                  <h1 className="text-xl text-teal-800">
-                     Print Node Credentials
-                  </h1>
-                  <button
-                     type="button"
-                     title="Click to copy"
-                     onClick={() => copyText(state.email)}
-                     className="text-gray-500 hover:bg-gray-100"
-                  >
-                     Email: {state.email}
-                  </button>
-                  <button
-                     type="button"
-                     title="Click to copy"
-                     onClick={() =>
-                        copyText(state.printNodePassword.slice(0, 8))
-                     }
-                     className="text-gray-500 hover:bg-gray-100"
-                  >
-                     Password: {state.printNodePassword.slice(0, 8)}
-                  </button>
-               </Section>
-               <Section>
-                  <h1 className="text-xl text-teal-800">Print Node Links</h1>
-                  <LinkItem
-                     target="__blank"
-                     rel="noopener noreferrer"
-                     href="https://www.printnode.com/en/download"
-                  >
-                     Download Print Node
-                  </LinkItem>
-                  <LinkItem
-                     target="__blank"
-                     rel="noopener noreferrer"
-                     href="https://www.printnode.com/en/docs/installation"
-                  >
-                     Installing Print Node
-                  </LinkItem>
-                  <LinkItem
-                     target="__blank"
-                     rel="noopener noreferrer"
-                     href="https://www.printnode.com/en/docs/supported-printers"
-                  >
-                     View supported printers
-                  </LinkItem>
-                  <LinkItem
-                     target="__blank"
-                     rel="noopener noreferrer"
-                     href="https://www.printnode.com/en/docs/supported-scales"
-                  >
-                     View supported scales
-                  </LinkItem>
-               </Section>
-            </main>
-         )}
-      </Wrapper>
+         </Wrapper>
+      </Layout>
    )
 }
 

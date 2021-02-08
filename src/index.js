@@ -1,50 +1,56 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-import { ApolloClient } from 'apollo-client'
-import { setContext } from 'apollo-link-context'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
-import { split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
-import { ApolloProvider } from '@apollo/react-hooks'
+import {
+   split,
+   ApolloClient,
+   ApolloLink,
+   InMemoryCache,
+   createHttpLink,
+   ApolloProvider,
+} from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import App from './App'
 
 import { AuthProvider } from './store/auth'
 import { TabProvider } from './store/tabs'
-import { UserProvider } from './store/user'
 
 import './index.css'
 import './styles.css'
 
-const authLink = setContext((_, { headers }) => {
-   return {
-      headers: {
-         ...headers,
-         'x-hasura-admin-secret': `${process.env.REACT_APP_ADMIN_SECRET}`,
-      },
-   }
-})
-
-const wsLink = new WebSocketLink({
-   uri: process.env.REACT_APP_DAILYCLOAK_SUBS_URL,
-   options: {
+const wssClient = new SubscriptionClient(
+   `${process.env.REACT_APP_DAILYCLOAK_SUBS_URL}`,
+   {
       reconnect: true,
       connectionParams: {
          headers: {
             'x-hasura-admin-secret': `${process.env.REACT_APP_ADMIN_SECRET}`,
          },
       },
-   },
+   }
+)
+
+const wssLink = new WebSocketLink(wssClient)
+
+const authLink = new ApolloLink((operation, forward) => {
+   operation.setContext(({ headers }) => ({
+      headers: {
+         ...headers,
+         'x-hasura-admin-secret': `${process.env.REACT_APP_ADMIN_SECRET}`,
+      },
+   }))
+   return forward(operation)
 })
 
-const httpLink = new HttpLink({
-   uri: process.env.REACT_APP_DAILYCLOAK_URL,
+const httpLink = createHttpLink({
+   uri: `${process.env.REACT_APP_DAILYCLOAK_URL}`,
 })
 
-const link = split(
+const splitLink = split(
    ({ query }) => {
       const definition = getMainDefinition(query)
       return (
@@ -52,24 +58,24 @@ const link = split(
          definition.operation === 'subscription'
       )
    },
-   wsLink,
+   wssLink,
    authLink.concat(httpLink)
 )
 
 const client = new ApolloClient({
-   link,
+   link: splitLink,
    cache: new InMemoryCache(),
 })
 
 ReactDOM.render(
-   <AuthProvider>
+   <Router>
       <ApolloProvider client={client}>
-         <UserProvider>
+         <AuthProvider>
             <TabProvider>
                <App />
             </TabProvider>
-         </UserProvider>
+         </AuthProvider>
       </ApolloProvider>
-   </AuthProvider>,
+   </Router>,
    document.getElementById('root')
 )

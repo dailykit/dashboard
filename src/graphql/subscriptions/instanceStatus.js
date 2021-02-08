@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const INSTANCE_STATUS = gql`
    subscription organization($id: Int!) {

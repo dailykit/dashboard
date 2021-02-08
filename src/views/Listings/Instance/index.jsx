@@ -1,7 +1,6 @@
 import React from 'react'
-import { useSubscription } from '@apollo/react-hooks'
+import { useSubscription } from '@apollo/client'
 
-import { UserContext } from '../../../store/user'
 import { useTabs } from '../../../store/tabs'
 
 import { FETCH_INSTANCE } from '../../../graphql'
@@ -9,16 +8,18 @@ import { FETCH_INSTANCE } from '../../../graphql'
 import { StyledSection } from './styled'
 import { Wrapper } from '../styled'
 
-import { Loader } from '../../../components'
+import { Loader, Layout } from '../../../components'
+import { useAuth } from '../../../store/auth'
 
 export const Instance = () => {
    const { tab, addTab } = useTabs()
    const [status, setStatus] = React.useState('LOADING')
    const [instance, setInstance] = React.useState({})
-   const { state: user } = React.useContext(UserContext)
-   const { data: { instances = [] } = {}, loading } = useSubscription(
+   const { user, authenticated } = useAuth()
+   const { error, data: { instances = [] } = {}, loading } = useSubscription(
       FETCH_INSTANCE,
       {
+         skip: !authenticated,
          variables: {
             where: {
                organizationId: { _eq: user.organization.id },
@@ -29,25 +30,48 @@ export const Instance = () => {
 
    React.useEffect(() => {
       if (!tab) {
-         addTab('Instance', '/dailyos')
+         addTab('Instance', '/instance')
       }
    }, [tab, addTab])
 
    React.useEffect(() => {
-      if ((!loading, Array.isArray(instances) && instances.length === 1)) {
+      if (!loading && Array.isArray(instances) && instances.length > 0) {
+         const [instance] = instances
          setStatus('SUCCESS')
-         setInstance(instances[0])
+         setInstance(instance)
+      } else if (
+         !loading &&
+         Array.isArray(instances) &&
+         instances.length === 0
+      ) {
+         setStatus('EMPTY')
+      } else if (!loading && error) {
+         setStatus('ERROR')
       }
-   }, [loading, instances])
+   }, [loading, instances, error])
 
    if (status === 'LOADING')
       return (
-         <Wrapper>
-            <Loader />
-         </Wrapper>
+         <Layout>
+            <Wrapper>
+               <Loader />
+            </Wrapper>
+         </Layout>
       )
-   if (status === 'SUCCESS')
+   if (status === 'ERROR')
       return (
+         <Layout>
+            <Wrapper>Something went wrong!</Wrapper>
+         </Layout>
+      )
+   if (status === 'EMPTY')
+      return (
+         <Layout>
+            <Wrapper>No instances linked!</Wrapper>
+         </Layout>
+      )
+   return (
+      <Layout>
          <Wrapper>
             <h1 className="text-xl text-teal-700 border-b pb-3 mb-4">
                DailyOS Details
@@ -58,7 +82,7 @@ export const Instance = () => {
             {Object.keys(instance).length > 0 ? (
                <div className="border border-l-4 rounded p-3">
                   {instance.active && (
-                     <span className="uppercase text-xs font-medium text-teal-800 rounded bg-teal-200 border border-teal-300 px-1">
+                     <span className="uppercase text-xs font-medium text-green-800 rounded bg-green-200 border border-green-300 px-1">
                         Running
                      </span>
                   )}
@@ -120,5 +144,6 @@ export const Instance = () => {
                </div>
             )}
          </Wrapper>
-      )
+      </Layout>
+   )
 }
