@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 import Header from './Header'
 import { useAuth } from '../../store/auth'
 
-const Layout = ({ children }) => {
+const Layout = ({ children, hideSteps }) => {
    const { user, onboard } = useAuth()
    const evalHeightFirst = step => {
       if (step === 1) {
@@ -33,9 +33,9 @@ const Layout = ({ children }) => {
    }
 
    return (
-      <Styles.Wrapper step={onboard.step}>
+      <Styles.Wrapper step={onboard.step} hideSteps={hideSteps}>
          <Header />
-         <Styles.Aside>
+         <Styles.Aside hideSteps={hideSteps}>
             <Styles.Stage height1={evalHeightFirst(onboard.step)}>
                Basic Information
                <>
@@ -86,22 +86,28 @@ const Styles = {
       display: grid;
       overflow: hidden;
       background: #fafafa;
-      grid-template-rows: ${({ step }) =>
-         step === 7 ? '40px 1fr 16px' : '40px 1fr 100px'};
-      grid-template-columns: 1fr 320px;
-      grid-template-areas: ${({ step }) =>
-         step === 7
-            ? `'head head'
-         'main aside'`
-            : `'head head'
-         'main aside'
-         'footer aside'`};
+      ${({ hideSteps }) =>
+         hideSteps
+            ? css`
+                 grid-template-columns: 1fr;
+                 grid-template-rows: 40px 1fr 16px;
+                 grid-template-areas: 'head' 'main';
+              `
+            : css`
+                 grid-template-rows: ${({ step }) =>
+                    step === 7 ? '40px 1fr 16px' : '40px 1fr 100px'};
+                 grid-template-columns: 1fr 320px;
+                 grid-template-areas: ${({ step }) =>
+                    step === 7
+                       ? `'head head' 'main aside'`
+                       : `'head head' 'main aside' 'footer aside'`};
+              `}
    `,
    Aside: styled.aside`
       grid-area: aside;
-      display: flex;
       flex-direction: column;
       padding-top: 16px;
+      display: ${({ hideSteps }) => (hideSteps ? 'none' : 'flex')};
    `,
    Stage: styled.ul(
       ({ height1, height2 }) => css`

@@ -70,7 +70,7 @@ export const FinishSetup = () => {
    const { user } = useAuth()
 
    return (
-      <Layout>
+      <Layout hideSteps={user?.organization?.onboardStatus === 'FINISH_SETUP'}>
          <Main>
             {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
             {user?.organization?.onboardStatus === 'SETUP_DOMAIN' ? (
@@ -210,6 +210,7 @@ const GifCycle = () => {
 }
 
 const RenderGif = ({ gifs }) => {
+   const { user } = useAuth()
    const [gif, setGif] = React.useState(null)
    React.useEffect(() => {
       ;(async () => {
@@ -228,5 +229,16 @@ const RenderGif = ({ gifs }) => {
          setGif(gifs[6])
       })()
    }, [gifs])
-   return gif && <Gif gif={gif} width={window.innerWidth - 354} />
+   return (
+      gif && (
+         <Gif
+            gif={gif}
+            width={
+               user?.organization?.onboardStatus === 'FINISH_SETUP'
+                  ? window.innerWidth
+                  : window.innerWidth - 354
+            }
+         />
+      )
+   )
 }
