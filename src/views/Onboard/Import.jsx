@@ -136,13 +136,6 @@ export const Import = () => {
                            className="h-10 border rounded pl-2 w-full"
                         />
                      </fieldset>
-                     <Button
-                        type="button"
-                        onClick={onSubmit}
-                        disabled={!url || loading}
-                     >
-                        {loading ? 'Saving' : 'Save'}
-                     </Button>
                      {error && (
                         <span className="self-start block text-red-500 mt-2">
                            {error}
@@ -157,7 +150,18 @@ export const Import = () => {
          </Main>
          <Footer>
             <Button onClick={back}>Back</Button>
-            <Button onClick={next}>Skip</Button>
+            <section className="space-x-3">
+               <button onClick={next} className="text-gray-400">
+                  Skip this step?
+               </button>
+               <Button
+                  type="button"
+                  onClick={onSubmit}
+                  disabled={!url || loading}
+               >
+                  Next
+               </Button>
+            </section>
          </Footer>
       </Layout>
    )
