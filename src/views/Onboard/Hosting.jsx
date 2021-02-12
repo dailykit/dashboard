@@ -37,25 +37,25 @@ export const Hosting = () => {
       <Layout>
          <Main>
             {!user?.keycloak?.email_verified && <VerifyEmailBanner />}
-            <section className="mt-8 mx-auto w-1/4">
+            <section className="mt-8 mx-auto w-2/4">
                <H2>Hosting</H2>
                <Radio>
                   <Radio.Option
-                     id="self"
-                     name="hosting"
-                     value="self"
-                     onClick={() => {}}
-                  >
-                     Self Hosting
-                  </Radio.Option>
-                  <Radio.Option
-                     value=""
-                     isDisabled
+                     value="cloud"
                      id="cloud"
                      name="hosting"
                      onClick={() => {}}
                   >
                      Cloud Hosting
+                  </Radio.Option>
+                  <Radio.Option
+                     id="self"
+                     isDisabled
+                     name="hosting"
+                     value=""
+                     onClick={() => {}}
+                  >
+                     Self Hosting
                   </Radio.Option>
                </Radio>
                {user.organization?.hosting?.type === 'cloud' && (
